@@ -1,0 +1,271 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+ 
+body {
+  min-height: 100vh;
+  height: 100vh;
+  overflow: hidden;
+  background-image: url('Background2.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  position: relative;
+}
+ 
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.45);
+  z-index: 0;
+}
+ 
+/* ── Navbar ── */
+.navbar {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 36px;
+  background: rgba(255,255,255,0.05);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(255,255,255,0.12);
+}
+ 
+.brand {
+  color: white;
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+ 
+.brand span { color: darkturquoise; }
+ 
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+ 
+.nav-user {
+  color: rgba(255,255,255,0.7);
+  font-size: 13px;
+}
+ 
+.nav-user span {
+  color: darkturquoise;
+  font-weight: 600;
+}
+ 
+.logout-btn {
+  background: transparent;
+  border: 1.5px solid rgba(255,255,255,0.3);
+  border-radius: 8px;
+  color: rgba(255,255,255,0.8);
+  font-family: 'Poppins', sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 1px;
+  padding: 7px 16px;
+  cursor: pointer;
+  text-transform: uppercase;
+  transition: all 0.3s ease;
+}
+ 
+.logout-btn:hover {
+  border-color: darkturquoise;
+  color: darkturquoise;
+}
+ 
+/* ── Main layout ── */
+.layout {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  gap: 20px;
+  padding: 90px 30px 30px;
+  height: 100vh;
+}
+ 
+/* ── Glass card base ── */
+.glass {
+  background: rgba(255,255,255,0.05);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255,255,255,0.18);
+  box-shadow: 0 25px 50px rgba(0,0,0,0.25);
+  border-radius: 16px;
+}
+ 
+/* ── LEFT: Course card ── */
+.course-card {
+  width: 200px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 22px 18px;
+  overflow-y: auto;
+  animation: fadeUp 0.4s ease both;
+}
+ 
+.course-card::-webkit-scrollbar { display: none; }
+.course-card { scrollbar-width: none; }
+ 
+.course-label {
+  color: darkturquoise;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+  flex-shrink: 0;
+}
+ 
+a.course-entry {
+  text-decoration: none;
+  display: block;
+  cursor: pointer;
+  margin-bottom: 12px;
+  flex-shrink: 0;
+}
+ 
+.course-name {
+  color: white;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.3;
+  margin-bottom: 2px;
+  transition: color 0.2s ease;
+}
+ 
+.course-teacher {
+  color: rgba(255,255,255,0.5);
+  font-size: 10px;
+  font-weight: 400;
+}
+ 
+a.course-entry:hover .course-name {
+  color: darkturquoise;
+}
+ 
+.course-divider {
+  height: 1px;
+  background: rgba(255,255,255,0.1);
+  margin-bottom: 28px;
+  flex-shrink: 0;
+}
+ 
+/* ── RIGHT: Schedule box ── */
+.schedule-card {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 32px 36px;
+  overflow: hidden;
+  animation: fadeUp 0.4s ease 0.1s both;
+}
+ 
+.schedule-header {
+  color: white;
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+ 
+.schedule-sub {
+  color: rgba(255,255,255,0.4);
+  font-size: 12px;
+  letter-spacing: 0.5px;
+  margin-bottom: 30px;
+}
+ 
+/* Weekly grid */
+.week-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 14px;
+  flex: 1;
+  overflow: hidden;
+}
+ 
+.day-col {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+ 
+.day-heading {
+  color: rgba(255,255,255,0.4);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+ 
+.day-heading.today {
+  color: darkturquoise;
+  border-bottom-color: rgba(0,206,209,0.4);
+}
+ 
+.slot {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 10px;
+  padding: 12px 14px;
+  transition: all 0.2s ease;
+  cursor: default;
+}
+ 
+.slot:hover {
+  background: rgba(255,255,255,0.09);
+  border-color: rgba(0,206,209,0.35);
+  transform: translateY(-1px);
+}
+ 
+.slot-time {
+  color: rgba(255,255,255,0.35);
+  font-size: 10px;
+  margin-bottom: 5px;
+}
+ 
+.slot-course {
+  color: white;
+  font-size: 12px;
+  font-weight: 600;
+  margin-bottom: 3px;
+}
+ 
+.slot-teacher {
+  color: rgba(255,255,255,0.45);
+  font-size: 10px;
+}
+ 
+.slot-bar {
+  width: 24px;
+  height: 3px;
+  border-radius: 2px;
+  margin-bottom: 8px;
+}
+ 
+.slot.empty {
+  opacity: 0;
+  pointer-events: none;
+}
+ 
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
