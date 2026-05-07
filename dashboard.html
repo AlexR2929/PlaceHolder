@@ -17,6 +17,7 @@
     <div class="brand">Time<span>Grid</span></div>
     <div class="nav-right">
       <button class="logout-btn" onclick="CreateClass()">Create Class</button>
+      <button class="logout-btn" onclick="JoinClass()">Join Class</button>
       <div class="nav-user">Logged in as <span id="navEmail">—</span></div>
       <button class="logout-btn" onclick="logout()">
         <i class="fas fa-sign-out-alt"></i> Logout
@@ -266,6 +267,10 @@
 
     function CreateClass() {
       window.location.href = 'createclass.html'
+    }
+
+    function JoinClass() {
+      window.location.href = 'joinclass.html'
     }
   </script>
  
