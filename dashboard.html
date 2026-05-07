@@ -16,7 +16,7 @@
   <nav class="navbar">
     <div class="brand">Time<span>Grid</span></div>
     <div class="nav-right">
-      <div class="logout-btn">Create Class</div>
+      <button class="logout-btn" onclick="CreateClass()">Create Class</button>
       <div class="nav-user">Logged in as <span id="navEmail">—</span></div>
       <button class="logout-btn" onclick="logout()">
         <i class="fas fa-sign-out-alt"></i> Logout
@@ -262,6 +262,10 @@
     function logout() {
       sessionStorage.clear();
       window.location.href = 'index.html';
+    }
+
+    function CreateClass() {
+      window.location.href = 'createclass.html'
     }
   </script>
  
