@@ -84,7 +84,7 @@ body::before {
   color: darkturquoise;
 }
  
-/* ── Page wrap ── */
+/* Page wrap */
 .page-wrap {
   position: relative;
   z-index: 1;
@@ -94,7 +94,7 @@ body::before {
   min-height: 100vh;
 }
  
-/* ── Glass card ── */
+/* Glass card */
 .glass {
   background: rgba(255,255,255,0.05);
   backdrop-filter: blur(12px);
