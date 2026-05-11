@@ -153,6 +153,11 @@
     </div>
   </div>
 
-  <script src="createclass.js"></script>
+  <script 
+    src="createclass.js">
+
+    const user = JSON.parse(sessionStorage.getItem('currentUser') || '{}');
+    document.getElementById('navEmail').textContent = user.email || '—';
+  </script>
 </body>
 </html>
