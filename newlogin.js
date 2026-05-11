@@ -58,7 +58,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return bufferToBase64(hashBuffer) === storedHash;
     }
  
-    // ── Form submission ───────────────────────────────────────────────────────
+    // Form submission
  
     loginForm.addEventListener('submit', async function (e) {
         e.preventDefault();
