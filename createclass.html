@@ -127,14 +127,14 @@
       <p class="section-hint">Select which period this class occurs in.</p>
 
       <div class="period-grid" id="periodGrid">
-        <button class="period-btn" data-period="1" onclick="selectPeriod(this)">P1<span class="period-sub">8:30 AM</span></button>
-        <button class="period-btn" data-period="2" onclick="selectPeriod(this)">P2<span class="period-sub">10:05 AM</span></button>
-        <button class="period-btn" data-period="3" onclick="selectPeriod(this)">P3<span class="period-sub">11:40 AM</span></button>
-        <button class="period-btn" data-period="4" onclick="selectPeriod(this)">P4<span class="period-sub">12:50 PM</span></button>
-        <button class="period-btn" data-period="5" onclick="selectPeriod(this)">P5<span class="period-sub">2:15 PM</span></button>
-        <button class="period-btn" data-period="6" onclick="selectPeriod(this)">P6<span class="period-sub">3:40 PM</span></button>
-        <button class="period-btn" data-period="7" onclick="selectPeriod(this)">P7<span class="period-sub">5:05 PM</span></button>
-        <button class="period-btn" data-period="8" onclick="selectPeriod(this)">P8<span class="period-sub">6:30 PM</span></button>
+        <button class="period-btn" data-period="1" onclick="selectPeriod(this)">P1</button>
+        <button class="period-btn" data-period="2" onclick="selectPeriod(this)">P2</button>
+        <button class="period-btn" data-period="3" onclick="selectPeriod(this)">P3</button>
+        <button class="period-btn" data-period="4" onclick="selectPeriod(this)">P4</button>
+        <button class="period-btn" data-period="5" onclick="selectPeriod(this)">P5</button>
+        <button class="period-btn" data-period="6" onclick="selectPeriod(this)">P6</button>
+        <button class="period-btn" data-period="7" onclick="selectPeriod(this)">P7</button>
+        <button class="period-btn" data-period="8" onclick="selectPeriod(this)">P8</button>
       </div>
 
       <div class="divider"></div>
@@ -158,6 +158,11 @@
 
     const user = JSON.parse(sessionStorage.getItem('currentUser') || '{}');
     document.getElementById('navEmail').textContent = user.email || '—';
+
+    function logout() {
+      sessionStorage.clear();
+      window.location.href = 'index.html';
+    }
   </script>
 </body>
 </html>
