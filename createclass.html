@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TimeGrid — Create Class</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="stylesheet" href="createclass.css">
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="brand">Time<span>Grid</span></div>
+    <div class="nav-right">
+      <div class="nav-user">Logged in as <span id="navEmail">—</span></div>
+      <button class="logout-btn" onclick="logout()">
+        <i class="fas fa-sign-out-alt"></i> Logout
+      </button>
+    </div>
+  </nav>
+
+  <div class="page-wrap">
+    <div class="form-card glass">
+
+      <div class="form-header">
+        <h1>Create New Class</h1>
+        <a href="dashboard.html" class="back-link"><i class="fas fa-arrow-left"></i> Back to Dashboard</a>
+      </div>
+
+      <!-- Course Info -->
+      <div class="section-label">Course Info</div>
+
+      <div class="field-row">
+        <div class="field-group">
+          <label for="courseName">Course Name</label>
+          <input type="text" id="courseName" placeholder="e.g. AP Calculus">
+          <span class="field-error" id="courseNameErr">Required</span>
+        </div>
+        <div class="field-group">
+          <label for="teacher">Teacher</label>
+          <input type="text" id="teacher" placeholder="e.g. Mr. Johnson">
+          <span class="field-error" id="teacherErr">Required</span>
+        </div>
+      </div>
+
+      <div class="field-group">
+        <label for="description">Description</label>
+        <textarea id="description" placeholder="Brief course description…"></textarea>
+      </div>
+
+      <div class="divider"></div>
+
+      <!-- Teacher Availability -->
+      <div class="section-label">Teacher Availability</div>
+      <p class="section-hint">Select the time slots when the teacher is available.</p>
+
+      <div class="week-grid">
+
+        <div class="day-col">
+          <div class="day-heading">Mon</div>
+          <div class="time-slot" data-day="mon" data-time="8:30 AM" onclick="toggleSlot(this)">
+            <div class="slot-check"><div class="slot-check-mark"></div></div>
+            <span class="slot-label">8:30 AM</span>
+          </div>
+          <div class="time-slot" data-day="mon" data-time="10:05 AM" onclick="toggleSlot(this)">
+            <div class="slot-check"><div class="slot-check-mark"></div></div>
+            <span class="slot-label">10:05 AM</span>
+          </div>
+          <div class="time-slot" data-day="mon" data-time="11:40 AM" onclick="toggleSlot(this)">
+            <div class="slot-check"><div class="slot-check-mark"></div></div>
+            <span class="slot-label">11:40 AM</span>
+          </div>
+          <div class="time-slot" data-day="mon" data-time="12:50 PM" onclick="toggleSlot(this)">
+            <div class="slot-check"><div class="slot-check-mark"></div></div>
+            <span class="slot-label">12:50 PM</span>
+          </div>
+          <div class="time-slot" data-day="mon" data-time="2:15 PM" onclick="toggleSlot(this)">
+            <div class="slot-check"><div class="slot-check-mark"></div></div>
+            <span class="slot-label">2:15 PM</span>
+          </div>
+          <div class="time-slot" data-day="mon" data-time="3:40 PM" onclick="toggleSlot(this)">
+            <div class="slot-check"><div class="slot-check-mark"></div></div>
+            <span class="slot-label">3:40 PM</span>
+          </div>
+          <div class="time-slot" data-day="mon" data-time="5:05 PM" onclick="toggleSlot(this)">
+            <div class="slot-check"><div class="slot-check-mark"></div></div>
+            <span class="slot-label">5:05 PM</span>
+          </div>
+          <div class="time-slot" data-day="mon" data-time="6:30 PM" onclick="toggleSlot(this)">
+            <div class="slot-check"><div class="slot-check-mark"></div></div>
+            <span class="slot-label">6:30 PM</span>
+          </div>
+        </div>
+
+        <div class="day-col">
+          <div class="day-heading">Tue</div>
+          <div class="time-slot" data-day="tue" data-time="8:30 AM" onclick="toggleSlot(this)">
+            <div class="slot-check"><div class="slot-check-mark"></div></div>
+            <span class="slot-label">8:30 AM</span>
+          </div>
+          <div class="time-slot" data-day="tue" data-time="10:05 AM" onclick="toggleSlot(this)">
+            <div class="slot-check"><div class="slot-check-mark"></div></div>
+            <span class="slot-label">10:05 AM</span>
+          </div>
+          <div class="time-slot" data-day="tue" data-time="11:40 AM" onclick="toggleSlot(this)">
+            <div class="slot-check"><div class="slot-check-mark"></div></div>
+            <span class="slot-label">11:40 AM</span>
+          </div>
+          <div class="time-slot" data-day="tue" data-time="12:50 PM" onclick="toggleSlot(this)">
+            <div class="slot-check"><div class="slot-check-mark"></div></div>
+            <span class="slot-label">12:50 PM</span>
+          </div>
+          <div class="time-slot" data-day="tue" data-time="2:15 PM" onclick="toggleSlot(this)">
+            <div class="slot-check"><div class="slot-check-mark"></div></div>
+            <span class="slot-label">2:15 PM</span>
+          </div>
+          <div class="time-slot" data-day="tue" data-time="3:40 PM" onclick="toggleSlot(this)">
+            <div class="slot-check"><div class="slot-check-mark"></div></div>
+            <span class="slot-label">3:40 PM</span>
+          </div>
+          <div class="time-slot" data-day="tue" data-time="5:05 PM" onclick="toggleSlot(this)">
+            <div class="slot-check"><div class="slot-check-mark"></div></div>
+            <span class="slot-label">5:05 PM</span>
+          </div>
+          <div class="time-slot" data-day="tue" data-time="6:30 PM" onclick="toggleSlot(this)">
+            <div class="slot-check"><div class="slot-check-mark"></div></div>
+            <span class="slot-label">6:30 PM</span>
+          </div>
+        </div>
+
+        <div class="day-col">
+          <div class="day-heading">Wed</div>
+          <div class="time-slot" data-day="wed" data-time="8:30 AM" onclick="toggleSlot(this)">
+            <div class="slot-check"><div class="slot-check-mark"></div></div>
+            <span class="slot-label">8:30 AM</span>
+          </div>
+          <div class="time-slot" data-day="wed" data-time="10:05 AM" onclick="toggleSlot(this)">
+            <div class="slot-check"><div class="slot-check-mark"></div></div>
+            <span class="slot-label">10:05 AM</span>
+          </div>
+          <div class="time-slot" data-day="wed" data-time="11:40 AM" onclick="toggleSlot(this)">
+            <div class="slot-check"><div class="slot-check-mark"></div></div>
+            <span class="slot-label">11:40 AM</span>
+          </div>
+          <div class="time-slot" data-day="wed" data-time="12:50 PM" onclick="toggleSlot(this)">
+            <div class="slot-check"><div class="slot-check-mark"></div></div>
+            <span class="slot-label">12:50 PM</span>
+          </div>
+          <div class="time-slot" data-day="wed" data-time="2:15 PM" onclick="toggleSlot(this)">
+            <div class="slot-check"><div class="slot-check-mark"></div></div>
+            <span class="slot-label">2:15 PM</span>
+          </div>
+          <div class="time-slot" data-day="wed" data-time="3:40 PM" onclick="toggleSlot(this)">
+            <div class="slot-check"><div class="slot-check-mark"></div></div>
+            <span class="slot-label">3:40 PM</span>
+          </div>
+          <div class="time-slot" data-day="wed" data-time="5:05 PM" onclick="toggleSlot(this)">
+            <div class="slot-check"><div class="slot-check-mark"></div></div>
+            <span class="slot-label">5:05 PM</span>
+          </div>
+          <div class="time-slot" data-day="wed" data-time="6:30 PM" onclick="toggleSlot(this)">
+            <div class="slot-check"><div class="slot-check-mark"></div></div>
+            <span class="slot-label">6:30 PM</span>
+          </div>
+        </div>
+
+        <div class="day-col">
+          <div class="day-heading">Thu</div>
+          <div class="time-slot" data-day="thu" data-time="8:30 AM" onclick="toggleSlot(this)">
+            <div class="slot-check"><div class="slot-check-mark"></div></div>
+            <span class="slot-label">8:30 AM</span>
+          </div>
+          <div class="time-slot" data-day="thu" data-time="10:05 AM" onclick="toggleSlot(this)">
+            <div class="slot-check"><div class="slot-check-mark"></div></div>
+            <span class="slot-label">10:05 AM</span>
+          </div>
+          <div class="time-slot" data-day="thu" data-time="11:40 AM" onclick="toggleSlot(this)">
+            <div class="slot-check"><div class="slot-check-mark"></div></div>
+            <span class="slot-label">11:40 AM</span>
+          </div>
+          <div class="time-slot" data-day="thu" data-time="12:50 PM" onclick="toggleSlot(this)">
+            <div class="slot-check"><div class="slot-check-mark"></div></div>
+            <span class="slot-label">12:50 PM</span>
+          </div>
+          <div class="time-slot" data-day="thu" data-time="2:15 PM" onclick="toggleSlot(this)">
+            <div class="slot-check"><div class="slot-check-mark"></div></div>
+            <span class="slot-label">2:15 PM</span>
+          </div>
+          <div class="time-slot" data-day="thu" data-time="3:40 PM" onclick="toggleSlot(this)">
+            <div class="slot-check"><div class="slot-check-mark"></div></div>
+            <span class="slot-label">3:40 PM</span>
+          </div>
+          <div class="time-slot" data-day="thu" data-time="5:05 PM" onclick="toggleSlot(this)">
+            <div class="slot-check"><div class="slot-check-mark"></div></div>
+            <span class="slot-label">5:05 PM</span>
+          </div>
+          <div class="time-slot" data-day="thu" data-time="6:30 PM" onclick="toggleSlot(this)">
+            <div class="slot-check"><div class="slot-check-mark"></div></div>
+            <span class="slot-label">6:30 PM</span>
+          </div>
+        </div>
+
+        <div class="day-col">
+          <div class="day-heading">Fri</div>
+          <div class="time-slot" data-day="fri" data-time="8:30 AM" onclick="toggleSlot(this)">
+            <div class="slot-check"><div class="slot-check-mark"></div></div>
+            <span class="slot-label">8:30 AM</span>
+          </div>
+          <div class="time-slot" data-day="fri" data-time="10:05 AM" onclick="toggleSlot(this)">
+            <div class="slot-check"><div class="slot-check-mark"></div></div>
+            <span class="slot-label">10:05 AM</span>
+          </div>
+          <div class="time-slot" data-day="fri" data-time="11:40 AM" onclick="toggleSlot(this)">
+            <div class="slot-check"><div class="slot-check-mark"></div></div>
+            <span class="slot-label">11:40 AM</span>
+          </div>
+          <div class="time-slot" data-day="fri" data-time="12:50 PM" onclick="toggleSlot(this)">
+            <div class="slot-check"><div class="slot-check-mark"></div></div>
+            <span class="slot-label">12:50 PM</span>
+          </div>
+          <div class="time-slot" data-day="fri" data-time="2:15 PM" onclick="toggleSlot(this)">
+            <div class="slot-check"><div class="slot-check-mark"></div></div>
+            <span class="slot-label">2:15 PM</span>
+          </div>
+          <div class="time-slot" data-day="fri" data-time="3:40 PM" onclick="toggleSlot(this)">
+            <div class="slot-check"><div class="slot-check-mark"></div></div>
+            <span class="slot-label">3:40 PM</span>
+          </div>
+          <div class="time-slot" data-day="fri" data-time="5:05 PM" onclick="toggleSlot(this)">
+            <div class="slot-check"><div class="slot-check-mark"></div></div>
+            <span class="slot-label">5:05 PM</span>
+          </div>
+          <div class="time-slot" data-day="fri" data-time="6:30 PM" onclick="toggleSlot(this)">
+            <div class="slot-check"><div class="slot-check-mark"></div></div>
+            <span class="slot-label">6:30 PM</span>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="divider"></div>
+
+      <!-- Period -->
+      <div class="section-label">Period (1–8)</div>
+      <p class="section-hint">Select which period this class occurs in.</p>
+
+      <div class="period-grid" id="periodGrid">
+        <button class="period-btn" data-period="1" onclick="selectPeriod(this)">P1<span class="period-sub">8:30 AM</span></button>
+        <button class="period-btn" data-period="2" onclick="selectPeriod(this)">P2<span class="period-sub">10:05 AM</span></button>
+        <button class="period-btn" data-period="3" onclick="selectPeriod(this)">P3<span class="period-sub">11:40 AM</span></button>
+        <button class="period-btn" data-period="4" onclick="selectPeriod(this)">P4<span class="period-sub">12:50 PM</span></button>
+        <button class="period-btn" data-period="5" onclick="selectPeriod(this)">P5<span class="period-sub">2:15 PM</span></button>
+        <button class="period-btn" data-period="6" onclick="selectPeriod(this)">P6<span class="period-sub">3:40 PM</span></button>
+        <button class="period-btn" data-period="7" onclick="selectPeriod(this)">P7<span class="period-sub">5:05 PM</span></button>
+        <button class="period-btn" data-period="8" onclick="selectPeriod(this)">P8<span class="period-sub">6:30 PM</span></button>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="btn-row">
+        <a href="dashboard.html" class="cancel-btn">Cancel</a>
+        <button class="submit-btn" onclick="submitForm()">
+          <i class="fas fa-plus"></i> Create Class
+        </button>
+      </div>
+
+      <div class="success-banner" id="successBanner">
+        <i class="fas fa-check-circle"></i> Class created successfully! Redirecting…
+      </div>
+
+    </div>
+  </div>
+
+  <script src="createclass.js"></script>
+</body>
+</html>
