@@ -153,13 +153,12 @@
     </div>
   </div>
 
-  <script 
-    src="createclass.js">
+  <script>
 
     if (!sessionStorage.getItem('loggedIn')) {
       window.location.href = 'index.html';
     }
- 
+    
     const user = JSON.parse(sessionStorage.getItem('currentUser') || '{}');
     document.getElementById('navEmail').textContent = user.email || '—';
 
