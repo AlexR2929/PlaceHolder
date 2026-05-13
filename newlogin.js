@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const loginForm = document.getElementById('loginForm');
     const submitBtn = document.getElementById('submitBtn');
  
-    // ── Crypto helpers ────────────────────────────────────────────────────────
+    // Crypto helpers 
  
     function strToBuffer(str) {
         return new TextEncoder().encode(str);
@@ -58,7 +58,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return bufferToBase64(hashBuffer) === storedHash;
     }
  
-    // ── Form submission ───────────────────────────────────────────────────────
+    // Form submission
  
     loginForm.addEventListener('submit', async function (e) {
         e.preventDefault();
