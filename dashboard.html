@@ -4,15 +4,72 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>TimeGrid Dashboard</title>
- 
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <link rel="stylesheet" href="dashboardstyle.css">
+  <style>
+    .empty-courses {
+      color: rgba(255,255,255,0.2);
+      font-size: 11px;
+      text-align: center;
+      padding: 20px 0;
+      line-height: 1.7;
+    }
+    .empty-courses i {
+      display: block;
+      font-size: 22px;
+      margin-bottom: 8px;
+      opacity: 0.4;
+    }
+    .course-badge {
+      display: inline-block;
+      background: rgba(0,206,209,0.12);
+      border: 1px solid rgba(0,206,209,0.25);
+      border-radius: 3px;
+      color: darkturquoise;
+      font-size: 8px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      padding: 2px 5px;
+      margin-top: 4px;
+      text-transform: uppercase;
+    }
+    .empty-slot {
+      background: rgba(255,255,255,0.02);
+      border: 1px dashed rgba(255,255,255,0.06);
+      border-radius: 10px;
+      padding: 12px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .empty-slot-text {
+      color: rgba(255,255,255,0.12);
+      font-size: 10px;
+      letter-spacing: 0.5px;
+    }
+    .slot-code {
+      color: rgba(255,255,255,0.2);
+      font-size: 9px;
+      font-family: 'Courier New', monospace;
+      margin-top: 4px;
+      letter-spacing: 1px;
+    }
+    /* Period color palette */
+    .p-color-1 { background: #20b2aa; }
+    .p-color-2 { background: #e84040; }
+    .p-color-3 { background: #e88c3a; }
+    .p-color-4 { background: blueviolet; }
+    .p-color-5 { background: #4a9eff; }
+    .p-color-6 { background: #e84080; }
+    .p-color-7 { background: #50c878; }
+    .p-color-8 { background: #ffd700; }
+    .p-color-0 { background: #888; }
+  </style>
 </head>
-
+ 
 <body>
  
-  <!-- Navbar -->
   <nav class="navbar">
     <div class="brand">Time<span>Grid</span></div>
     <div class="nav-right">
@@ -27,217 +84,27 @@
  
   <div class="layout">
  
-    <!-- LEFT: tall course card -->
-    <div class="course-card glass">
-      <div class="course-label">Book Courses</div>
- 
-      <a href="CourseTest.html" class="course-entry">
-        <div class="course-name">(Course Name)</div>
-        <div class="course-teacher">Teacher Name</div>
-      </a>
-      <div class="course-divider"></div>
- 
-      <a href="CourseTest.html" class="course-entry">
-        <div class="course-name">(Course Name)</div>
-        <div class="course-teacher">Teacher Name</div>
-      </a>
-      <div class="course-divider"></div>
- 
-      <a href="CourseTest.html" class="course-entry">
-        <div class="course-name">(Course Name)</div>
-        <div class="course-teacher">Teacher Name</div>
-      </a>
-      <div class="course-divider"></div>
- 
-      <a href="CourseTest.html" class="course-entry">
-        <div class="course-name">(Course Name)</div>
-        <div class="course-teacher">Teacher Name</div>
-      </a>
-      <div class="course-divider"></div>
- 
-      <a href="CourseTest.html" class="course-entry">
-        <div class="course-name">(Course Name)</div>
-        <div class="course-teacher">Teacher Name</div>
-      </a>
-      <div class="course-divider"></div>
- 
-      <a href="CourseTest.html" class="course-entry">
-        <div class="course-name">(Course Name)</div>
-        <div class="course-teacher">Teacher Name</div>
-      </a>
-      <div class="course-divider"></div>
- 
-      <a href="CourseTest.html" class="course-entry">
-        <div class="course-name">(Course Name)</div>
-        <div class="course-teacher">Teacher Name</div>
-      </a>
-      <div class="course-divider"></div>
- 
-      <a href="CourseTest.html" class="course-entry">
-        <div class="course-name">(Course Name)</div>
-        <div class="course-teacher">Teacher Name</div>
-      </a>
+    <!-- LEFT: course list -->
+    <div class="course-card glass" id="courseCard">
+      <div class="course-label">My Courses</div>
+      <div id="courseList">
+        <!-- populated by JS -->
+      </div>
     </div>
  
-    <!-- RIGHT: large schedule box -->
+    <!-- RIGHT: schedule -->
     <div class="schedule-card glass">
       <div class="schedule-header">Schedule</div>
       <div class="schedule-sub" id="todayDate">—</div>
  
-      <div class="week-grid">
- 
-        <!-- Monday -->
-        <div class="day-col">
-          <div class="day-heading" id="mon-head">MON</div>
-          <div class="slot">
-            <div class="slot-bar" style="background:#20b2aa"></div>
-            <div class="slot-time">8:30 - 9:45 AM</div>
-            <div class="slot-course">(Course Name)</div>
-            <div class="slot-teacher">Teacher Name</div>
-          </div>
-          <div class="slot">
-            <div class="slot-bar" style="background:#e84040"></div>
-            <div class="slot-time">10:05 - 11:20 AM</div>
-            <div class="slot-course">(Course Name)</div>
-            <div class="slot-teacher">Teacher Name</div>
-          </div>
-          <div class="slot">
-            <div class="slot-bar" style="background:#e88c3a"></div>
-            <div class="slot-time">12:50 - 2:05 PM</div>
-            <div class="slot-course">(Course Name)</div>
-            <div class="slot-teacher">Teacher Name</div>
-          </div>
-          <div class="slot">
-            <div class="slot-bar" style="background:blueviolet"></div>
-            <div class="slot-time">2:15 - 3:30 PM</div>
-            <div class="slot-course">(Course Name)</div>
-            <div class="slot-teacher">Teacher Name</div>
-          </div>
-        </div>
- 
-        <!-- Tuesday -->
-        <div class="day-col">
-          <div class="day-heading" id="tue-head">TUE</div>
-          <div class="slot">
-            <div class="slot-bar" style="background:#20b2aa"></div>
-            <div class="slot-time"> 8:30 - 9:45 AM</div>
-            <div class="slot-course">(Course Name)</div>
-            <div class="slot-teacher">Teacher Name</div>
-          </div>
-          <div class="slot">
-            <div class="slot-bar" style="background:#e84040"></div>
-            <div class="slot-time">10:05 - 11:20 AM</div>
-            <div class="slot-course">(Course Name)</div>
-            <div class="slot-teacher">Teacher Name</div>
-          </div>
-          <div class="slot">
-            <div class="slot-bar" style="background:#e88c3a"></div>
-            <div class="slot-time">12:50 - 2:05 PM</div>
-            <div class="slot-course">(Course Name)</div>
-            <div class="slot-teacher">Teacher Name</div>
-          </div>
-          <div class="slot">
-            <div class="slot-bar" style="background:blueviolet"></div>
-            <div class="slot-time">2:15 - 3:30 PM</div>
-            <div class="slot-course">(Course Name)</div>
-            <div class="slot-teacher">Teacher Name</div>
-          </div>
-        </div>
- 
-        <!-- Wednesday -->
-        <div class="day-col">
-          <div class="day-heading" id="wed-head">WED</div>
-          <div class="slot">
-            <div class="slot-bar" style="background:#20b2aa"></div>
-            <div class="slot-time">8:30 - 9:45 AM</div>
-            <div class="slot-course">(Course Name)</div>
-            <div class="slot-teacher">Teacher Name</div>
-          </div>
-          <div class="slot">
-            <div class="slot-bar" style="background:#e84040"></div>
-            <div class="slot-time">10:05 - 11:20 AM</div>
-            <div class="slot-course">(Course Name)</div>
-            <div class="slot-teacher">Teacher Name</div>
-          </div>
-          <div class="slot">
-            <div class="slot-bar" style="background:#e88c3a"></div>
-            <div class="slot-time">12:50 - 2:05 PM</div>
-            <div class="slot-course">(Course Name)</div>
-            <div class="slot-teacher">Teacher Name</div>
-          </div>
-          <div class="slot">
-            <div class="slot-bar" style="background:blueviolet"></div>
-            <div class="slot-time">2:15 - 3:30 PM</div>
-            <div class="slot-course">(Course Name)</div>
-            <div class="slot-teacher">Teacher Name</div>
-          </div>
-        </div>
- 
-        <!-- Thursday -->
-        <div class="day-col">
-          <div class="day-heading" id="thu-head">THU</div>
-          <div class="slot">
-            <div class="slot-bar" style="background:#20b2aa"></div>
-            <div class="slot-time">8:30 - 9:45 AM</div>
-            <div class="slot-course">(Course Name)</div>
-            <div class="slot-teacher">Teacher Name</div>
-          </div>
-          <div class="slot">
-            <div class="slot-bar" style="background:#e84040"></div>
-            <div class="slot-time">10:05 - 11:20 AM</div>
-            <div class="slot-course">(Course Name)</div>
-            <div class="slot-teacher">Teacher Name</div>
-          </div>
-          <div class="slot">
-            <div class="slot-bar" style="background:#e88c3a"></div>
-            <div class="slot-time">12:50 - 2:05 PM</div>
-            <div class="slot-course">(Course Name)</div>
-            <div class="slot-teacher">Teacher Name</div>
-          </div>
-          <div class="slot">
-            <div class="slot-bar" style="background:blueviolet"></div>
-            <div class="slot-time">2:15 - 3:30 PM</div>
-            <div class="slot-course">(Course Name)</div>
-            <div class="slot-teacher">Teacher Name</div>
-          </div>
-        </div>
- 
-        <!-- Friday -->
-        <div class="day-col">
-          <div class="day-heading" id="fri-head">FRI</div>
-          <div class="slot">
-            <div class="slot-bar" style="background:#20b2aa"></div>
-            <div class="slot-time">8:30 - 9:45 AM</div>
-            <div class="slot-course">(Course Name)</div>
-            <div class="slot-teacher">Teacher Name</div>
-          </div>
-          <div class="slot">
-            <div class="slot-bar" style="background:#e84040"></div>
-            <div class="slot-time">10:05 - 11:20 AM</div>
-            <div class="slot-course">(Course Name)</div>
-            <div class="slot-teacher">Teacher Name</div>
-          </div>
-          <div class="slot">
-            <div class="slot-bar" style="background:#e88c3a"></div>
-            <div class="slot-time">12:50 - 2:05 PM</div>
-            <div class="slot-course">(Course Name)</div>
-            <div class="slot-teacher">Teacher Name</div>
-          </div>
-          <div class="slot">
-            <div class="slot-bar" style="background:blueviolet"></div>
-            <div class="slot-time">2:15 - 3:30 PM</div>
-            <div class="slot-course">(Course Name)</div>
-            <div class="slot-teacher">Teacher Name</div>
-          </div>
-        </div>
- 
+      <div class="week-grid" id="weekGrid">
+        <!-- populated by JS -->
       </div>
     </div>
  
   </div>
  
-  <script> 
-  //Auth guard 
+  <script>
     if (!sessionStorage.getItem('loggedIn')) {
       window.location.href = 'index.html';
     }
@@ -245,33 +112,125 @@
     const user = JSON.parse(sessionStorage.getItem('currentUser') || '{}');
     document.getElementById('navEmail').textContent = user.email || '—';
  
-    // Date & highlight today 
+    // Date
     const days   = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
     const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
     const now    = new Date();
     const dayIdx = now.getDay();
- 
     document.getElementById('todayDate').textContent =
       `${days[dayIdx]}, ${months[now.getMonth()]} ${now.getDate()} ${now.getFullYear()}`;
  
-    const headMap = { 1:'mon-head', 2:'tue-head', 3:'wed-head', 4:'thu-head', 5:'fri-head' };
-    if (headMap[dayIdx]) {
-      document.getElementById(headMap[dayIdx]).classList.add('today');
+    // Period colors
+    const periodColors = ['p-color-0','p-color-1','p-color-2','p-color-3','p-color-4','p-color-5','p-color-6','p-color-7','p-color-8'];
+ 
+    // Period schedule times (simplified: each period maps to a time slot)
+    const periodTimes = {
+      '1': '8:30 - 9:45 AM',
+      '2': '10:05 - 11:20 AM',
+      '3': '12:50 AM - 2:05 PM',
+      '4': '2:15 - 3:30 PM',
+      '5': '8:30 - 9:45 PM',
+      '6': '10:05 - 11:20 AM',
+      '7': '12:50 - 11:20 AM',
+      '8': '2:05 - 3:30 PM',
+    };
+ 
+    // Load enrolled courses
+    function getEnrolledCourses() {
+      const allCourses = JSON.parse(localStorage.getItem('courses') || '[]');
+      const enrolledIds = JSON.parse(localStorage.getItem('enrolledCourses_' + user.email) || '[]');
+      return allCourses.filter(c => enrolledIds.includes(c.id));
     }
  
-    //Logout
+    function renderCourseList(courses) {
+      const list = document.getElementById('courseList');
+      if (courses.length === 0) {
+        list.innerHTML = `
+          <div class="empty-courses">
+            <i class="fas fa-book-open"></i>
+            No courses yet.<br>
+            Create or join a class<br>to get started.
+          </div>`;
+        return;
+      }
+ 
+      list.innerHTML = '';
+      courses.forEach((c, i) => {
+        const colorClass = periodColors[parseInt(c.period) || 0];
+        const isOwner = c.createdBy === user.email;
+ 
+        const entry = document.createElement('div');
+        entry.style.marginBottom = '0';
+ 
+        entry.innerHTML = `
+          <a href="course.html?id=${c.id}" class="course-entry">
+            <div class="course-name">${c.name}</div>
+            <div class="course-teacher">${c.teacher}</div>
+            ${c.period ? `<div class="slot-code">Period ${c.period}</div>` : ''}
+            ${isOwner ? `<div><span class="course-badge">Owner: ${c.code}</span></div>` : `<div class="slot-code">${c.code}</div>`}
+          </a>
+          ${i < courses.length - 1 ? '<div class="course-divider"></div>' : ''}
+        `;
+        list.appendChild(entry);
+      });
+    }
+ 
+    function renderSchedule(courses) {
+      const weekGrid = document.getElementById('weekGrid');
+      const dayNames = ['MON','TUE','WED','THU','FRI'];
+      const dayKeys  = ['mon','tue','wed','thu','fri'];
+      const headIds  = ['mon-head','tue-head','wed-head','thu-head','fri-head'];
+      const todayMap = { 1:'mon-head', 2:'tue-head', 3:'wed-head', 4:'thu-head', 5:'fri-head' };
+ 
+      weekGrid.innerHTML = '';
+ 
+      dayKeys.forEach((day, di) => {
+        const col = document.createElement('div');
+        col.className = 'day-col';
+ 
+        const headId = headIds[di];
+        const isToday = todayMap[dayIdx] === headId;
+        col.innerHTML = `<div class="day-heading ${isToday ? 'today' : ''}" id="${headId}">${dayNames[di]}</div>`;
+ 
+        // Find courses scheduled on this day (via availability or just show all)
+        // We show all enrolled courses colour by period
+        if (courses.length === 0) {
+          const emp = document.createElement('div');
+          emp.className = 'empty-slot';
+          emp.innerHTML = '<span class="empty-slot-text">No classes</span>';
+          col.appendChild(emp);
+        } else {
+          courses.forEach(c => {
+            const colorClass = periodColors[parseInt(c.period) || 0];
+            const time = periodTimes[c.period] || '—';
+            const slot = document.createElement('div');
+            slot.className = 'slot';
+            slot.innerHTML = `
+              <div class="slot-bar ${colorClass}"></div>
+              <div class="slot-time">${time}</div>
+              <div class="slot-course">${c.name}</div>
+              <div class="slot-teacher">${c.teacher}</div>
+            `;
+            col.appendChild(slot);
+          });
+        }
+ 
+        weekGrid.appendChild(col);
+      });
+    }
+ 
+    // ── Init ──
+    const enrolled = getEnrolledCourses();
+    renderCourseList(enrolled);
+    renderSchedule(enrolled);
+ 
     function logout() {
       sessionStorage.clear();
       window.location.href = 'index.html';
     }
-
-    function CreateClass() {
-      window.location.href = 'createclass.html'
-    }
-
-    function JoinClass() {
-      window.location.href = 'joincourse.html'
-    }
+ 
+    function CreateClass() { window.location.href = 'createclass.html'; }
+    function JoinClass()   { window.location.href = 'joincourse.html'; }
   </script>
  
 </body>

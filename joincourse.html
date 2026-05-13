@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TimeGrid Join Class</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="stylesheet" href="createclass.css">
+  <style>
+    
+  </style>
+</head>
+<body>
+ 
+  <nav class="navbar">
+    <div class="brand">Time<span>Grid</span></div>
+    <div class="nav-right">
+      <div class="nav-user">Logged in as <span id="navEmail">—</span></div>
+      <button class="logout-btn" onclick="logout()">
+        <i class="fas fa-sign-out-alt"></i> Logout
+      </button>
+    </div>
+  </nav>
+ 
+  <div class="page-wrap">
+    <div class="form-card glass">
+ 
+      <div class="form-header">
+        <h1>Join a Class</h1>
+        <a href="dashboard.html" class="back-link"><i class="fas fa-arrow-left"></i> Back to Dashboard</a>
+      </div>
+ 
+      <div class="section-label">Enter Class Code</div>
+      <p class="section-hint">Ask your teacher for the 6-character class code.</p>
+ 
+      <div class="field-group">
+        <div class="code-input-wrap">
+          <input type="text" class="code-input" id="classCode" placeholder="ABC123" maxlength="6"
+            oninput="onCodeInput(this)" onkeydown="if(event.key==='Enter') lookupCode()">
+        </div>
+        <span class="field-error" id="codeErr">Please enter a valid 6 character code</span>
+      </div>
+ 
+      <!-- Live preview of found course -->
+      <div class="course-preview" id="coursePreview">
+        <div class="preview-name" id="previewName">—</div>
+        <div class="preview-teacher" id="previewTeacher">—</div>
+        <div class="preview-desc" id="previewDesc"></div>
+        <div class="preview-meta">
+          <span class="preview-tag" id="previewPeriod"></span>
+          <span class="preview-tag" id="previewCode"></span>
+        </div>
+        <div class="already-enrolled" id="alreadyMsg" style="display:none">
+          <i class="fas fa-info-circle"></i> You are already enrolled in this class.
+        </div>
+      </div>
+ 
+      <div class="btn-row">
+        <a href="dashboard.html" class="cancel-btn">Cancel</a>
+        <button class="submit-btn" onclick="joinCourse()">
+         Join Class
+        </button>
+      </div>
+ 
+      <div class="success-banner" id="successBanner">
+        <i class="fas fa-check-circle"></i> Joined successfully! Redirecting to dashboard…
+      </div>
+ 
+    </div>
+  </div>
+ 
+  <script>
+    if (!sessionStorage.getItem('loggedIn')) {
+      window.location.href = 'index.html';
+    }
+ 
+    const user = JSON.parse(sessionStorage.getItem('currentUser') || '{}');
+    document.getElementById('navEmail').textContent = user.email || '—';
+ 
+    let foundCourse = null;
+ 
+    function onCodeInput(input) {
+      input.value = input.value.toUpperCase().replace(/[^A-Z0-9]/g, '');
+      document.getElementById('codeErr').classList.remove('visible');
+      input.classList.remove('error');
+ 
+      if (input.value.length === 6) {
+        lookupCode();
+      } else {
+        document.getElementById('coursePreview').style.display = 'none';
+        foundCourse = null;
+      }
+    }
+ 
+    function lookupCode() {
+      const code = document.getElementById('classCode').value.trim().toUpperCase();
+      const courses = JSON.parse(localStorage.getItem('courses') || '[]');
+      foundCourse = courses.find(c => c.code === code) || null;
+ 
+      if (!foundCourse) {
+        document.getElementById('coursePreview').style.display = 'none';
+        return;
+      }
+ 
+      document.getElementById('previewName').textContent    = foundCourse.name;
+      document.getElementById('previewTeacher').textContent = foundCourse.teacher;
+      document.getElementById('previewDesc').textContent    = foundCourse.description || '';
+      document.getElementById('previewPeriod').textContent  = foundCourse.period ? 'Period ' + foundCourse.period : '';
+      document.getElementById('previewCode').textContent    = 'Code: ' + foundCourse.code;
+ 
+      const enrolled = JSON.parse(localStorage.getItem('enrolledCourses_' + user.email) || '[]');
+      const alreadyIn = enrolled.includes(foundCourse.id);
+      document.getElementById('alreadyMsg').style.display = alreadyIn ? 'block' : 'none';
+ 
+      document.getElementById('coursePreview').style.display = 'block';
+    }
+ 
+    function joinCourse() {
+      const code = document.getElementById('classCode').value.trim().toUpperCase();
+ 
+      if (code.length < 6) {
+        document.getElementById('classCode').classList.add('error');
+        document.getElementById('codeErr').classList.add('visible');
+        return;
+      }
+ 
+      if (!foundCourse) {
+        lookupCode();
+        if (!foundCourse) {
+          document.getElementById('classCode').classList.add('error');
+          document.getElementById('codeErr').textContent = 'No class found with that code';
+          document.getElementById('codeErr').classList.add('visible');
+          return;
+        }
+      }
+ 
+      // Add user to enrolled list
+      const enrolled = JSON.parse(localStorage.getItem('enrolledCourses_' + user.email) || '[]');
+      if (!enrolled.includes(foundCourse.id)) {
+        enrolled.push(foundCourse.id);
+        localStorage.setItem('enrolledCourses_' + user.email, JSON.stringify(enrolled));
+      }
+ 
+      // Add user to course members
+      const courses = JSON.parse(localStorage.getItem('courses') || '[]');
+      const idx = courses.findIndex(c => c.id === foundCourse.id);
+      if (idx !== -1 && !courses[idx].members.includes(user.email)) {
+        courses[idx].members.push(user.email);
+        localStorage.setItem('courses', JSON.stringify(courses));
+      }
+ 
+      document.getElementById('successBanner').style.display = 'block';
+      setTimeout(() => { window.location.href = 'dashboard.html'; }, 2000);
+    }
+ 
+    function logout() {
+      sessionStorage.clear();
+      window.location.href = 'index.html';
+    }
+  </script>
+</body>
+</html>

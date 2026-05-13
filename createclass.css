@@ -446,3 +446,127 @@ body::before {
 }
  
 .success-banner i { margin-right: 8px; }
+
+.code-reveal {
+      display: none;
+      background: rgba(0,206,209,0.08);
+      border: 1px solid rgba(0,206,209,0.35);
+      border-radius: 12px;
+      padding: 20px 24px;
+      margin-top: 14px;
+      text-align: center;
+      animation: fadeUp 0.4s ease both;
+    }
+    .code-reveal-label {
+      color: rgba(255,255,255,0.45);
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+    .code-reveal-value {
+      color: darkturquoise;
+      font-size: 32px;
+      font-weight: 700;
+      letter-spacing: 8px;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+      font-family: 'Courier New', monospace;
+    }
+    .code-copy-btn {
+      background: transparent;
+      border: 1px solid rgba(0,206,209,0.4);
+      border-radius: 6px;
+      color: darkturquoise;
+      font-family: 'Poppins', sans-serif;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 1px;
+      padding: 6px 14px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .code-copy-btn:hover { background: rgba(0,206,209,0.12); }
+    .code-hint {
+      color: rgba(255,255,255,0.3);
+      font-size: 10px;
+      margin-top: 8px;
+    }
+    .code-input-wrap {
+      display: flex;
+      gap: 12px;
+      align-items: stretch;
+      margin-bottom: 16px;
+    }
+    .code-input {
+      flex: 1;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 8px;
+      color: white;
+      font-family: 'Courier New', monospace;
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: 8px;
+      padding: 14px 18px;
+      outline: none;
+      text-transform: uppercase;
+      text-align: center;
+      transition: border-color 0.25s, background 0.25s;
+    }
+    .code-input::placeholder {
+      color: rgba(255,255,255,0.15);
+      letter-spacing: 4px;
+      font-size: 18px;
+    }
+    .code-input:focus {
+      border-color: darkturquoise;
+      background: rgba(0,206,209,0.05);
+    }
+    .code-input.error { border-color: #e84040; }
+ 
+    .course-preview {
+      display: none;
+      background: rgba(0,206,209,0.06);
+      border: 1px solid rgba(0,206,209,0.25);
+      border-radius: 10px;
+      padding: 16px 18px;
+      margin-bottom: 16px;
+      animation: fadeUp 0.3s ease both;
+    }
+    .preview-name {
+      color: white;
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+    .preview-teacher {
+      color: darkturquoise;
+      font-size: 12px;
+      margin-bottom: 6px;
+    }
+    .preview-desc {
+      color: rgba(255,255,255,0.4);
+      font-size: 11px;
+      line-height: 1.5;
+    }
+    .preview-meta {
+      display: flex;
+      gap: 12px;
+      margin-top: 10px;
+    }
+    .preview-tag {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 4px;
+      color: rgba(255,255,255,0.45);
+      font-size: 10px;
+      padding: 3px 8px;
+      letter-spacing: 0.5px;
+    }
+    .already-enrolled {
+      color: #e88c3a;
+      font-size: 11px;
+      margin-top: 8px;
+    }

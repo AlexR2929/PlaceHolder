@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TimeGrid Course</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="stylesheet" href="createclass.css">
+  <link rel="stylesheet" href="coursestyle.css">
+  <style>
+    
+  </style>
+</head>
+<body>
+ 
+  <nav class="navbar">
+    <div class="brand">Time<span>Grid</span></div>
+    <div class="nav-right">
+      <div class="nav-user">Logged in as <span id="navEmail">—</span></div>
+      <button class="logout-btn" onclick="logout()">
+        <i class="fas fa-sign-out-alt"></i> Logout
+      </button>
+    </div>
+  </nav>
+ 
+  <div class="page-wrap">
+    <div class="course-page" id="coursePage">
+      <!-- populated by JS -->
+    </div>
+  </div>
+ 
+  <script>
+    if (!sessionStorage.getItem('loggedIn')) {
+      window.location.href = 'index.html';
+    }
+ 
+    const user = JSON.parse(sessionStorage.getItem('currentUser') || '{}');
+    document.getElementById('navEmail').textContent = user.email || '—';
+ 
+    const params   = new URLSearchParams(window.location.search);
+    const courseId = params.get('id');
+    const courses  = JSON.parse(localStorage.getItem('courses') || '[]');
+    const course   = courses.find(c => c.id === courseId);
+ 
+    const periodTimes = {
+      '1': '8:30 – 9:45 AM',
+      '2': '10:05 – 11:20 AM',
+      '3': '11:30 AM – 12:45 PM',
+      '4': '12:50 – 2:05 PM',
+      '5': '2:15 – 3:30 PM',
+      '6': '8:30 – 9:45 AM',
+      '7': '10:05 – 11:20 AM',
+      '8': '12:50 – 2:05 PM',
+    };
+ 
+    const dayKeys  = ['mon','tue','wed','thu','fri'];
+    const dayNames = ['Mon','Tue','Wed','Thu','Fri'];
+ 
+    function copyCode(code) {
+      navigator.clipboard.writeText(code).then(() => {
+        const btn = document.getElementById('copyBtn');
+        btn.innerHTML = '<i class="fas fa-check"></i> Copied!';
+        setTimeout(() => { btn.innerHTML = '<i class="fas fa-copy"></i> Copy Code'; }, 2000);
+      });
+    }
+ 
+    function render() {
+      const page = document.getElementById('coursePage');
+ 
+      if (!course) {
+        page.innerHTML = `
+          <div class="info-card glass">
+            <div class="not-found">
+              <i class="fas fa-exclamation-circle"></i>
+              Course not found.<br>
+              <a href="dashboard.html" style="color:darkturquoise;font-size:13px;margin-top:12px;display:inline-block;">
+                ← Back to Dashboard
+              </a>
+            </div>
+          </div>`;
+        return;
+      }
+ 
+      const isOwner  = course.createdBy === user.email;
+      const members  = course.members || [];
+      const avail    = course.availability || [];
+ 
+      // Build availability lookup
+      const availMap = {};
+      avail.forEach(a => {
+        if (!availMap[a.day]) availMap[a.day] = [];
+        availMap[a.day].push(a.time);
+      });
+ 
+      // Availability grid HTML
+      const availGridHTML = dayKeys.map((day, di) => {
+        const slots = availMap[day] || [];
+        const hasPreSchool  = slots.includes('Prior to School');
+        const hasAfterSchool = slots.includes('After School');
+        return `
+          <div class="avail-day">
+            <div class="avail-day-name">${dayNames[di]}</div>
+            <div class="avail-slot ${hasPreSchool ? 'on' : 'off'}">Pre-School</div>
+            <div class="avail-slot ${hasAfterSchool ? 'on' : 'off'}">After School</div>
+          </div>`;
+      }).join('');
+ 
+      // Members HTML
+      const membersHTML = members.length === 0
+        ? `<div class="no-members">No members yet.</div>`
+        : members.map(email => {
+            const initial = email[0].toUpperCase();
+            const isCreator = email === course.createdBy;
+            return `
+              <div class="member-row">
+                <div class="member-avatar">${initial}</div>
+                <div class="member-email">${email}</div>
+                <div class="member-tag ${isCreator ? '' : 'student'}">${isCreator ? 'Owner' : 'Student'}</div>
+              </div>`;
+          }).join('');
+ 
+      const createdDate = course.createdAt
+        ? new Date(course.createdAt).toLocaleDateString('en-US', { year:'numeric', month:'long', day:'numeric' })
+        : '—';
+ 
+      page.innerHTML = `
+        <div class="back-row">
+          <a href="dashboard.html" class="back-link"><i class="fas fa-arrow-left"></i> Back to Dashboard</a>
+        </div>
+ 
+        <!-- Hero -->
+        <div class="course-hero">
+          <div class="hero-left">
+            <div class="hero-eyebrow">
+              Course Overview
+            </div>
+            <div class="hero-title">${course.name}</div>
+            <div class="hero-teacher">Taught by <span>${course.teacher}</span></div>
+            <div class="hero-desc">${course.description || 'No description provided.'}</div>
+          </div>
+          ${isOwner ? `
+          <div class="hero-right">
+            <div class="code-box">
+              <div class="code-box-label">Class Code</div>
+              <div class="code-box-value">${course.code}</div>
+              <button class="code-copy-btn" id="copyBtn" onclick="copyCode('${course.code}')">
+                <i class="fas fa-copy"></i> Copy Code
+              </button>
+            </div>
+          </div>` : ''}
+        </div>
+ 
+        <!-- Info grid -->
+        <div class="info-grid">
+ 
+          <!-- Period -->
+          <div class="info-card">
+            <div class="info-card-label"> Period</div>
+            <div class="period-display">
+              <div class="period-circle">${course.period || '—'}</div>
+              <div class="period-info-text">
+                <strong>Period ${course.period || '—'}</strong>
+                ${course.period ? periodTimes[course.period] || '' : 'No period selected'}
+              </div>
+            </div>
+          </div>
+ 
+          <!-- Members -->
+          <div class="info-card">
+            <div class="info-card-label"> Members (${members.length})</div>
+            <div class="members-list">${membersHTML}</div>
+          </div>
+ 
+          <!-- Availability -->
+          <div class="info-card full">
+            <div class="info-card-label"> Teacher Availability</div>
+            ${avail.length === 0
+              ? '<div style="color:rgba(255,255,255,0.25);font-size:12px;">No availability set.</div>'
+              : `<div class="avail-grid">${availGridHTML}</div>`}
+          </div>
+ 
+          <!-- Meta -->
+          <div class="info-card full">
+            <div class="info-card-label"> Course Details</div>
+            <div style="display:flex;gap:40px;flex-wrap:wrap;">
+              <div>
+                <div style="color:rgba(255,255,255,0.3);font-size:9px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:5px;">Created By</div>
+                <div style="color:rgba(255,255,255,0.7);font-size:13px;">${course.createdBy}</div>
+              </div>
+              <div>
+                <div style="color:rgba(255,255,255,0.3);font-size:9px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:5px;">Created On</div>
+                <div style="color:rgba(255,255,255,0.7);font-size:13px;">${createdDate}</div>
+              </div>
+              <div>
+                <div style="color:rgba(255,255,255,0.3);font-size:9px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:5px;">Course ID</div>
+                <div style="color:rgba(255,255,255,0.25);font-size:11px;font-family:'Courier New',monospace;">${course.id}</div>
+              </div>
+            </div>
+          </div>
+ 
+        </div>
+      `;
+    }
+ 
+    render();
+ 
+    function logout() {
+      sessionStorage.clear();
+      window.location.href = 'index.html';
+    }
+  </script>
+</body>
+</html>

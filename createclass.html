@@ -7,10 +7,12 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <link rel="stylesheet" href="createclass.css">
+  <style>
+    
+  </style>
 </head>
 <body>
-
-  <!-- Navbar -->
+ 
   <nav class="navbar">
     <div class="brand">Time<span>Grid</span></div>
     <div class="nav-right">
@@ -20,18 +22,17 @@
       </button>
     </div>
   </nav>
-
+ 
   <div class="page-wrap">
     <div class="form-card glass">
-
+ 
       <div class="form-header">
         <h1>Create New Class</h1>
         <a href="dashboard.html" class="back-link"><i class="fas fa-arrow-left"></i> Back to Dashboard</a>
       </div>
-
-      <!-- Course Info -->
+ 
       <div class="section-label">Course Info</div>
-
+ 
       <div class="field-row">
         <div class="field-group">
           <label for="courseName">Course Name</label>
@@ -40,92 +41,84 @@
         </div>
         <div class="field-group">
           <label for="teacher">Teacher</label>
-          <input type="text" id="teacher" placeholder="e.g. Mr. Johnson">
+          <input type="text" id="teacher" placeholder="e.g. Mr. Tester">
           <span class="field-error" id="teacherErr">Required</span>
         </div>
       </div>
-
+ 
       <div class="field-group">
         <label for="description">Description</label>
         <textarea id="description" placeholder="Brief course description…"></textarea>
       </div>
-
+ 
       <div class="divider"></div>
-
-      <!-- Teacher Availability -->
+ 
       <div class="section-label">Teacher Availability</div>
       <p class="section-hint">Select the time slots when the teacher is available.</p>
-
+ 
       <div class="week-grid">
-
         <div class="day-col">
           <div class="day-heading">Mon</div>
-          <div class="time-slot" data-day="fri" data-time="8:30 AM" onclick="toggleSlot(this)">
+          <div class="time-slot" data-day="mon" data-time="Prior to School" onclick="toggleSlot(this)">
             <div class="slot-check"><div class="slot-check-mark"></div></div>
             <span class="slot-label">Prior to School</span>
           </div>
-          <div class="time-slot" data-day="fri" data-time="6:30 PM" onclick="toggleSlot(this)">
+          <div class="time-slot" data-day="mon" data-time="After School" onclick="toggleSlot(this)">
             <div class="slot-check"><div class="slot-check-mark"></div></div>
             <span class="slot-label">After School</span>
           </div>
         </div>
-
         <div class="day-col">
           <div class="day-heading">Tue</div>
-          <div class="time-slot" data-day="fri" data-time="8:30 AM" onclick="toggleSlot(this)">
+          <div class="time-slot" data-day="tue" data-time="Prior to School" onclick="toggleSlot(this)">
             <div class="slot-check"><div class="slot-check-mark"></div></div>
             <span class="slot-label">Prior to School</span>
           </div>
-          <div class="time-slot" data-day="fri" data-time="6:30 PM" onclick="toggleSlot(this)">
+          <div class="time-slot" data-day="tue" data-time="After School" onclick="toggleSlot(this)">
             <div class="slot-check"><div class="slot-check-mark"></div></div>
             <span class="slot-label">After School</span>
           </div>
         </div>
-
         <div class="day-col">
-          <div class="day-heading">Wen</div>
-          <div class="time-slot" data-day="fri" data-time="8:30 AM" onclick="toggleSlot(this)">
+          <div class="day-heading">Wed</div>
+          <div class="time-slot" data-day="wed" data-time="Prior to School" onclick="toggleSlot(this)">
             <div class="slot-check"><div class="slot-check-mark"></div></div>
             <span class="slot-label">Prior to School</span>
           </div>
-          <div class="time-slot" data-day="fri" data-time="6:30 PM" onclick="toggleSlot(this)">
+          <div class="time-slot" data-day="wed" data-time="After School" onclick="toggleSlot(this)">
             <div class="slot-check"><div class="slot-check-mark"></div></div>
             <span class="slot-label">After School</span>
           </div>
         </div>
-
         <div class="day-col">
           <div class="day-heading">Thu</div>
-          <div class="time-slot" data-day="fri" data-time="8:30 AM" onclick="toggleSlot(this)">
+          <div class="time-slot" data-day="thu" data-time="Prior to School" onclick="toggleSlot(this)">
             <div class="slot-check"><div class="slot-check-mark"></div></div>
             <span class="slot-label">Prior to School</span>
           </div>
-          <div class="time-slot" data-day="fri" data-time="6:30 PM" onclick="toggleSlot(this)">
+          <div class="time-slot" data-day="thu" data-time="After School" onclick="toggleSlot(this)">
             <div class="slot-check"><div class="slot-check-mark"></div></div>
             <span class="slot-label">After School</span>
           </div>
         </div>
-
         <div class="day-col">
           <div class="day-heading">Fri</div>
-          <div class="time-slot" data-day="fri" data-time="8:30 AM" onclick="toggleSlot(this)">
+          <div class="time-slot" data-day="fri" data-time="Prior to School" onclick="toggleSlot(this)">
             <div class="slot-check"><div class="slot-check-mark"></div></div>
             <span class="slot-label">Prior to School</span>
           </div>
-          <div class="time-slot" data-day="fri" data-time="6:30 PM" onclick="toggleSlot(this)">
+          <div class="time-slot" data-day="fri" data-time="After School" onclick="toggleSlot(this)">
             <div class="slot-check"><div class="slot-check-mark"></div></div>
             <span class="slot-label">After School</span>
           </div>
         </div>
-
       </div>
-
+ 
       <div class="divider"></div>
-
-      <!-- Period -->
+ 
       <div class="section-label">Period (1–8)</div>
       <p class="section-hint">Select which period this class occurs in.</p>
-
+ 
       <div class="period-grid" id="periodGrid">
         <button class="period-btn" data-period="1" onclick="selectPeriod(this)">P1</button>
         <button class="period-btn" data-period="2" onclick="selectPeriod(this)">P2</button>
@@ -136,37 +129,126 @@
         <button class="period-btn" data-period="7" onclick="selectPeriod(this)">P7</button>
         <button class="period-btn" data-period="8" onclick="selectPeriod(this)">P8</button>
       </div>
-
+ 
       <div class="divider"></div>
-
+ 
       <div class="btn-row">
         <a href="dashboard.html" class="cancel-btn">Cancel</a>
         <button class="submit-btn" onclick="submitForm()">
           <i class="fas fa-plus"></i> Create Class
         </button>
       </div>
-
-      <div class="success-banner" id="successBanner">
-        <i class="fas fa-check-circle"></i> Class created successfully! Redirecting…
+ 
+      <div class="code-reveal" id="codeReveal">
+        <div class="code-reveal-label">Class Code — Share this with your students</div>
+        <div class="code-reveal-value" id="codeValue">——</div>
+        <button class="code-copy-btn" onclick="copyCode()"><i class="fas fa-copy"></i> Copy Code</button>
+        <div class="code-hint">Students can enter this code on the Join Class page.</div>
       </div>
-
+ 
+      <div class="success-banner" id="successBanner">
+        <i class="fas fa-check-circle"></i> Class created! Redirecting to dashboard in 4 seconds…
+      </div>
+ 
     </div>
   </div>
-
+ 
   <script>
-
     if (!sessionStorage.getItem('loggedIn')) {
       window.location.href = 'index.html';
     }
-    
+ 
     const user = JSON.parse(sessionStorage.getItem('currentUser') || '{}');
     document.getElementById('navEmail').textContent = user.email || '—';
-
+ 
+    let selectedPeriod = null;
+    let generatedCode  = null;
+ 
+    function toggleSlot(el) { el.classList.toggle('active'); }
+ 
+    function selectPeriod(btn) {
+      document.querySelectorAll('.period-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      selectedPeriod = btn.dataset.period;
+    }
+ 
+    function generateCode() {
+      const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+      let code = '';
+      for (let i = 0; i < 6; i++) code += chars[Math.floor(Math.random() * chars.length)];
+      return code;
+    }
+ 
+    function submitForm() {
+      const courseName = document.getElementById('courseName').value.trim();
+      const teacher    = document.getElementById('teacher').value.trim();
+      let valid = true;
+ 
+      if (!courseName) {
+        document.getElementById('courseName').classList.add('error');
+        document.getElementById('courseNameErr').classList.add('visible');
+        valid = false;
+      } else {
+        document.getElementById('courseName').classList.remove('error');
+        document.getElementById('courseNameErr').classList.remove('visible');
+      }
+ 
+      if (!teacher) {
+        document.getElementById('teacher').classList.add('error');
+        document.getElementById('teacherErr').classList.add('visible');
+        valid = false;
+      } else {
+        document.getElementById('teacher').classList.remove('error');
+        document.getElementById('teacherErr').classList.remove('visible');
+      }
+ 
+      if (!valid) return;
+ 
+      const availability = [];
+      document.querySelectorAll('.time-slot.active').forEach(slot => {
+        availability.push({ day: slot.dataset.day, time: slot.dataset.time });
+      });
+ 
+      const existingCourses = JSON.parse(localStorage.getItem('courses') || '[]');
+      let code;
+      do { code = generateCode(); } while (existingCourses.find(c => c.code === code));
+      generatedCode = code;
+ 
+      const newCourse = {
+        id:           Date.now().toString(),
+        code:         code,
+        name:         courseName,
+        teacher:      teacher,
+        description:  document.getElementById('description').value.trim(),
+        period:       selectedPeriod,
+        availability: availability,
+        createdBy:    user.email,
+        createdAt:    new Date().toISOString(),
+        members:      [user.email]
+      };
+ 
+      existingCourses.push(newCourse);
+      localStorage.setItem('courses', JSON.stringify(existingCourses));
+ 
+      document.getElementById('codeValue').textContent = code;
+      document.getElementById('codeReveal').style.display = 'block';
+      //document.getElementById('successBanner').style.display = 'block';
+ 
+    }
+ 
+    function copyCode() {
+      if (!generatedCode) return;
+      navigator.clipboard.writeText(generatedCode).then(() => {
+        const btn = document.querySelector('.code-copy-btn');
+        btn.innerHTML = '<i class="fas fa-check"></i> Copied!';
+        setTimeout(() => { btn.innerHTML = '<i class="fas fa-copy"></i> Copy Code'; }, 2000);
+      });
+    }
+ 
     function logout() {
       sessionStorage.clear();
       window.location.href = 'index.html';
     }
-
   </script>
 </body>
 </html>
