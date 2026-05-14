@@ -3,13 +3,37 @@
     <head>
         <title>TimeGrid Inbox</title>
         <link rel="stylesheet" href="dashboardstyle.css">
+        <link rel="stylesheet" href="createclass.css">
     </head>
     <body>
         <div class="navbar">
-            
+            <div class="brand">Time<span>Grid</span></div>
+            <div class="nav-right">
+                <div class="nav-user">Logged in as <span id="navEmail">—</span></div>
+                <button class="logout-btn" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </div> 
+        </div>
+        
+        <div class="page-wrap">
+            <div class="form-card glass">
+                <div class="form-header">
+                    <h1>Inbox</h1>
+                    <a href="dashboard.html" class="back-link"><i class="fas fa-arrow-left"></i> Back to Dashboard</a>
+                </div>
+
+                <p>This is a placeholder for the Inbox page. Here you would see messages and notifications related to your courses.</p>
+            </div>
         </div>
     </body>
     <script>
+        const user = JSON.parse(sessionStorage.getItem('currentUser') || '{}');
+        document.getElementById('navEmail').textContent = user.email || '—';
 
+        function logout() {
+            sessionStorage.clear();
+            window.location.href = 'index.html';
+        }
     </script>
 </html>
