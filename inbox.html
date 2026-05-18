@@ -1,47 +1,375 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>TimeGrid Inbox</title>
-        <link rel="stylesheet" href="dashboardstyle.css">
-        <link rel="stylesheet" href="createclass.css">
-        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    </head>
-    <style>
-        placeholder-text {
-            color: aqua;
-            font-weight: 600;
-        }
-    </style>
-    <body>
-        <div class="navbar">
-            <div class="brand">Time<span>Grid</span></div>
-            <div class="nav-right">
-                <div class="nav-user">Logged in as <span id="navEmail">—</span></div>
-                <button class="logout-btn" onclick="logout()">
-                    <i class="fas fa-sign-out-alt"></i> Logout
-                </button>
-            </div> 
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TimeGrid Inbox</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="stylesheet" href="createclass.css">
+  <link rel="stylesheet" href="inboxstyle.css">
+  <style>
+  </style>
+</head>
+<body>
+ 
+  <nav class="navbar">
+    <div class="brand">Time<span>Grid</span></div>
+    <div class="nav-right">
+      <div class="nav-user">Logged in as <span id="navEmail">—</span></div>
+      <button class="logout-btn" onclick="logout()">
+        <i class="fas fa-sign-out-alt"></i> Logout
+      </button>
+    </div>
+  </nav>
+ 
+  <div class="page-wrap">
+    <div class="inbox-layout">
+ 
+      <div class="conv-panel">
+        <div class="conv-panel-header">
+          <div class="conv-panel-title">Messages</div>
+          <a href="dashboard.html" class="back-link" style="font-size:10px;"><i class="fas fa-arrow-left"></i> Dashboard</a>
         </div>
-        
-        <div class="page-wrap">
-            <div class="form-card glass">
-                <div class="form-header">
-                    <h1>Inbox</h1>
-                    <a href="dashboard.html" class="back-link"><i class="fas fa-arrow-left"></i> Back to Dashboard</a>
-                </div>
-
-                <div class="placeholder-text"><p>This is a placeholder for the Inbox page. Here you would see messages and notifications related to your courses.</p></div>
+        <button class="new-conv-btn" onclick="openNewConvModal()">
+          <i class="fas fa-plus"></i> New Message
+        </button>
+        <div class="conv-list" id="convList"></div>
+      </div>
+ 
+      <div class="chat-panel" id="chatPanel">
+        <div class="no-conv-selected" id="noConvSelected">
+          <i class="fas fa-comments"></i>
+          <div>Select a conversation<br>or start a new one</div>
+        </div>
+      </div>
+ 
+    </div>
+  </div>
+ 
+  <!-- Schedule Modal -->
+  <div class="modal-overlay" id="scheduleModal">
+    <div class="modal-box">
+      <div class="modal-title">Book Office Hours</div>
+      <div class="modal-sub" id="scheduleModalSub">Choose an available slot and describe what you need help with.</div>
+ 
+      <div class="modal-section">
+        <div class="modal-label">Available Slots</div>
+        <div class="avail-slots-grid" id="availSlotsGrid"></div>
+        <div class="modal-error" id="slotErr">Please select a time slot</div>
+      </div>
+ 
+      <div class="modal-section">
+        <div class="modal-label">What do you plan to work on?</div>
+        <textarea class="modal-textarea" id="bookingNote" placeholder="e.g. I need help understanding integration by parts from chapter 5…"></textarea>
+        <div class="modal-error" id="noteErr">Please describe what you plan to work on</div>
+      </div>
+ 
+      <div class="modal-footer">
+        <button class="modal-cancel" onclick="closeScheduleModal()">Cancel</button>
+        <button class="modal-submit" onclick="submitBooking()">
+          <i class="fas fa-calendar-check"></i> Confirm Booking
+        </button>
+      </div>
+    </div>
+  </div>
+ 
+  <!-- New Conversation Modal -->
+  <div class="modal-overlay" id="newConvModal">
+    <div class="modal-box">
+      <div class="modal-title">New Message</div>
+      <div class="modal-sub">Choose a course to message the teacher.</div>
+ 
+      <div class="modal-section">
+        <div class="modal-label">Select Course</div>
+        <div class="course-select-list" id="courseSelectList"></div>
+        <div class="modal-error" id="courseSelectErr">Please select a course</div>
+      </div>
+ 
+      <div class="modal-footer">
+        <button class="modal-cancel" onclick="closeNewConvModal()">Cancel</button>
+        <button class="modal-submit" onclick="startConversation()">
+          <i class="fas fa-paper-plane"></i> Open Chat
+        </button>
+      </div>
+    </div>
+  </div>
+ 
+  <script>
+    if (!sessionStorage.getItem('loggedIn')) {
+      window.location.href = 'index.html';
+    }
+ 
+    const user = JSON.parse(sessionStorage.getItem('currentUser') || '{}');
+    document.getElementById('navEmail').textContent = user.email || '—';
+ 
+    const dayLabels = { mon:'Mon', tue:'Tue', wed:'Wed', thu:'Thu', fri:'Fri' };
+ 
+    function getConversations() {
+      return JSON.parse(localStorage.getItem('conversations_' + user.email) || '[]');
+    }
+ 
+    function saveConversations(convs) {
+      localStorage.setItem('conversations_' + user.email, JSON.stringify(convs));
+    }
+ 
+    function getEnrolledCourses() {
+      const all = JSON.parse(localStorage.getItem('courses') || '[]');
+      const ids = JSON.parse(localStorage.getItem('enrolledCourses_' + user.email) || '[]');
+      return all.filter(c => ids.includes(c.id));
+    }
+ 
+    function formatTime(iso) {
+      const d = new Date(iso);
+      const h = d.getHours(), m = d.getMinutes();
+      return `${h % 12 || 12}:${m.toString().padStart(2,'0')} ${h >= 12 ? 'PM' : 'AM'}`;
+    }
+ 
+    function formatDate(iso) {
+      const d = new Date(iso), now = new Date();
+      if (now.toDateString() === d.toDateString()) return formatTime(iso);
+      if (now - d < 172800000) return 'Yesterday';
+      return d.toLocaleDateString('en-US', { month:'short', day:'numeric' });
+    }
+ 
+    function escHtml(s) {
+      return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    }
+ 
+    let activeConvId = null;
+    let selectedSlot = null;
+    let newConvCourseId = null;
+ 
+    function renderConvList() {
+      const convs = getConversations();
+      const list  = document.getElementById('convList');
+ 
+      if (convs.length === 0) {
+        list.innerHTML = `<div class="conv-empty"><i class="fas fa-inbox"></i>No conversations yet.<br>Start by messaging a teacher.</div>`;
+        return;
+      }
+ 
+      list.innerHTML = convs.map(conv => {
+        const last = conv.messages[conv.messages.length - 1];
+        const preview = last ? (last.type === 'booking' ? '📅 Office hours requested' : last.text) : 'No messages yet';
+        return `
+          <div class="conv-item ${conv.id === activeConvId ? 'active' : ''}" onclick="openConv('${conv.id}')">
+            <div class="conv-item-meta">
+              <div class="conv-item-name">${escHtml(conv.courseName)}</div>
+              <div class="conv-item-time">${last ? formatDate(last.at) : ''}</div>
             </div>
+            <div class="conv-item-preview">${escHtml(preview.slice(0,50))}${preview.length > 50 ? '…' : ''}</div>
+          </div>`;
+      }).join('');
+    }
+ 
+    function renderChat(convId) {
+      const conv  = getConversations().find(c => c.id === convId);
+      const panel = document.getElementById('chatPanel');
+      if (!conv) return;
+ 
+      panel.innerHTML = `
+        <div class="chat-header">
+          <div class="chat-header-left">
+            <div class="chat-avatar">${escHtml((conv.teacher || '?')[0].toUpperCase())}</div>
+            <div>
+              <div class="chat-header-name">${escHtml(conv.teacher)}</div>
+              <div class="chat-header-sub">${escHtml(conv.courseName)}</div>
+            </div>
+          </div>
+          <button class="schedule-btn" onclick="openScheduleModal('${conv.id}')">
+            <i class="fas fa-calendar-plus"></i> Book Office Hours
+          </button>
         </div>
-    </body>
-    <script>
-        const user = JSON.parse(sessionStorage.getItem('currentUser') || '{}');
-        document.getElementById('navEmail').textContent = user.email || '—';
-
-        function logout() {
-            sessionStorage.clear();
-            window.location.href = 'index.html';
+        <div class="messages-area" id="messagesArea">${renderMessages(conv.messages, conv.teacher)}</div>
+        <div class="chat-input-area">
+          <textarea class="chat-textarea" id="chatInput" placeholder="Message ${escHtml(conv.teacher)}…" rows="1"
+            onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendMsg();}"></textarea>
+          <button class="send-btn" onclick="sendMsg()"><i class="fas fa-paper-plane"></i></button>
+        </div>`;
+ 
+      scrollToBottom();
+    }
+ 
+    function renderMessages(msgs, teacher) {
+      if (!msgs || msgs.length === 0) {
+        return `<div class="chat-empty"><i class="fas fa-comment-dots"></i><div>No messages yet. Say hello!</div></div>`;
+      }
+      return msgs.map(msg => {
+        const isSent = msg.from === user.email;
+        const side   = isSent ? 'sent' : 'received';
+        if (msg.type === 'booking') {
+          return `
+            <div class="booking-card ${side}">
+              <div class="booking-card-label"><i class="fas fa-calendar-check"></i> Office Hours Request</div>
+              <div class="booking-tag"><i class="fas fa-clock" style="opacity:.5;margin-right:5px"></i>${escHtml(msg.booking.day)} — ${escHtml(msg.booking.time)}</div>
+              ${msg.booking.note ? `<div class="booking-note">"${escHtml(msg.booking.note)}"</div>` : ''}
+              <div><span class="booking-status"><i class="fas fa-check" style="font-size:8px"></i> Requested</span></div>
+              <div class="booking-msg-time">${formatTime(msg.at)}</div>
+            </div>`;
         }
-    </script>
+        return `
+          <div class="msg-bubble ${side}">
+            <div class="msg-text">${escHtml(msg.text).replace(/\n/g,'<br>')}</div>
+            <div class="msg-time">${formatTime(msg.at)}</div>
+          </div>`;
+      }).join('');
+    }
+ 
+    function scrollToBottom() {
+      const area = document.getElementById('messagesArea');
+      if (area) setTimeout(() => area.scrollTop = area.scrollHeight, 0);
+    }
+ 
+    function openConv(convId) {
+      activeConvId = convId;
+      renderConvList();
+      renderChat(convId);
+    }
+ 
+    function sendMsg() {
+      const input = document.getElementById('chatInput');
+      const text  = (input.value || '').trim();
+      if (!text || !activeConvId) return;
+ 
+      const convs = getConversations();
+      const conv  = convs.find(c => c.id === activeConvId);
+      if (!conv) return;
+ 
+      conv.messages.push({ from: user.email, type: 'text', text, at: new Date().toISOString() });
+      saveConversations(convs);
+      input.value = '';
+      renderConvList();
+      renderChat(activeConvId);
+    }
+ 
+    function openScheduleModal(convId) {
+      activeConvId = convId;
+      const conv    = getConversations().find(c => c.id === convId);
+      if (!conv) return;
+      const course  = (JSON.parse(localStorage.getItem('courses') || '[]')).find(c => c.id === conv.courseId);
+      const avail   = course ? (course.availability || []) : [];
+ 
+      document.getElementById('scheduleModalSub').textContent =
+        `Booking with ${conv.teacher} · ${conv.courseName}`;
+ 
+      selectedSlot = null;
+      const grid = document.getElementById('availSlotsGrid');
+ 
+      if (avail.length === 0) {
+        grid.innerHTML = `<div class="no-avail-msg">No availability has been set for this teacher yet.</div>`;
+      } else {
+        grid.innerHTML = avail.map((a, i) => `
+          <button class="avail-slot-btn" onclick="selectSlot(this,'${a.day}','${a.time}')">
+            <span class="slot-day">${dayLabels[a.day] || a.day}</span>
+            <span class="slot-time-label">${a.time}</span>
+          </button>`).join('');
+      }
+ 
+      document.getElementById('bookingNote').value = '';
+      document.getElementById('slotErr').classList.remove('visible');
+      document.getElementById('noteErr').classList.remove('visible');
+      document.getElementById('scheduleModal').classList.add('open');
+    }
+ 
+    function selectSlot(btn, day, time) {
+      document.querySelectorAll('.avail-slot-btn').forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+      selectedSlot = { day: dayLabels[day] || day, time };
+      document.getElementById('slotErr').classList.remove('visible');
+    }
+ 
+    function closeScheduleModal() {
+      document.getElementById('scheduleModal').classList.remove('open');
+      selectedSlot = null;
+    }
+ 
+    function submitBooking() {
+      const note = document.getElementById('bookingNote').value.trim();
+      let valid = true;
+      if (!selectedSlot) { document.getElementById('slotErr').classList.add('visible'); valid = false; }
+      if (!note) { document.getElementById('noteErr').classList.add('visible'); valid = false; }
+      if (!valid) return;
+ 
+      const convs = getConversations();
+      const conv  = convs.find(c => c.id === activeConvId);
+      if (!conv) return;
+ 
+      conv.messages.push({
+        from: user.email, type: 'booking',
+        booking: { day: selectedSlot.day, time: selectedSlot.time, note },
+        at: new Date().toISOString()
+      });
+ 
+      saveConversations(convs);
+      closeScheduleModal();
+      renderConvList();
+      renderChat(activeConvId);
+    }
+ 
+    function openNewConvModal() {
+      const courses = getEnrolledCourses();
+      const list    = document.getElementById('courseSelectList');
+      newConvCourseId = null;
+ 
+      if (courses.length === 0) {
+        list.innerHTML = `<div class="no-avail-msg">You're not enrolled in any courses yet.</div>`;
+      } else {
+        list.innerHTML = courses.map(c => `
+          <div class="course-select-item" onclick="selectCourseForConv(this,'${c.id}')">
+            <div class="course-select-name">${escHtml(c.name)}</div>
+            <div class="course-select-teacher">${escHtml(c.teacher)}</div>
+          </div>`).join('');
+      }
+ 
+      document.getElementById('courseSelectErr').classList.remove('visible');
+      document.getElementById('newConvModal').classList.add('open');
+    }
+ 
+    function selectCourseForConv(el, courseId) {
+      document.querySelectorAll('.course-select-item').forEach(i => i.classList.remove('selected'));
+      el.classList.add('selected');
+      newConvCourseId = courseId;
+      document.getElementById('courseSelectErr').classList.remove('visible');
+    }
+ 
+    function closeNewConvModal() {
+      document.getElementById('newConvModal').classList.remove('open');
+      newConvCourseId = null;
+    }
+ 
+    function startConversation() {
+      if (!newConvCourseId) { document.getElementById('courseSelectErr').classList.add('visible'); return; }
+ 
+      const course = (JSON.parse(localStorage.getItem('courses') || '[]')).find(c => c.id === newConvCourseId);
+      if (!course) return;
+ 
+      const convs    = getConversations();
+      const existing = convs.find(c => c.courseId === newConvCourseId);
+      if (existing) { closeNewConvModal(); openConv(existing.id); return; }
+ 
+      const newConv = {
+        id: Date.now().toString(),
+        courseId: course.id,
+        courseName: course.name,
+        teacher: course.teacher,
+        messages: []
+      };
+ 
+      convs.push(newConv);
+      saveConversations(convs);
+      closeNewConvModal();
+      renderConvList();
+      openConv(newConv.id);
+    }
+ 
+    document.getElementById('scheduleModal').addEventListener('click', e => { if (e.target === e.currentTarget) closeScheduleModal(); });
+    document.getElementById('newConvModal').addEventListener('click', e => { if (e.target === e.currentTarget) closeNewConvModal(); });
+ 
+    renderConvList();
+ 
+    function logout() { sessionStorage.clear(); window.location.href = 'index.html'; }
+  </script>
+</body>
 </html>
+ 

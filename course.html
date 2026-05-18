@@ -57,6 +57,24 @@
     const dayKeys  = ['mon','tue','wed','thu','fri'];
     const dayNames = ['Mon','Tue','Wed','Thu','Fri'];
  
+    function goToInbox() {
+      // Pre-create or find conversation for this course, then go to inbox
+      const convKey = 'conversations_' + user.email;
+      const convs   = JSON.parse(localStorage.getItem(convKey) || '[]');
+      const exists  = convs.find(c => c.courseId === courseId);
+      if (!exists && course) {
+        convs.push({
+          id: Date.now().toString(),
+          courseId: course.id,
+          courseName: course.name,
+          teacher: course.teacher,
+          messages: []
+        });
+        localStorage.setItem(convKey, JSON.stringify(convs));
+      }
+      window.location.href = 'inbox.html';
+    }
+ 
     function copyCode(code) {
       navigator.clipboard.writeText(code).then(() => {
         const btn = document.getElementById('copyBtn');
@@ -138,6 +156,9 @@
             <div class="hero-title">${course.name}</div>
             <div class="hero-teacher">Taught by <span>${course.teacher}</span></div>
             <div class="hero-desc">${course.description || 'No description provided.'}</div>
+          <button onclick="goToInbox()" style="margin-top:18px;background:rgba(0,206,209,0.1);border:1px solid rgba(0,206,209,0.35);border-radius:8px;color:darkturquoise;font-family:'Poppins',sans-serif;font-size:10px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;padding:8px 18px;cursor:pointer;transition:background 0.2s;display:inline-flex;align-items:center;gap:8px;">
+            <i class="fas fa-envelope"></i> Message Teacher
+          </button>
           </div>
           ${isOwner ? `
           <div class="hero-right">
