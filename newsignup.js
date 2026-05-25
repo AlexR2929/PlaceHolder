@@ -100,8 +100,12 @@ document.addEventListener('DOMContentLoaded', () => {
  
             localStorage.setItem('users', JSON.stringify(users));
  
-            // Redirect to login
-            window.location.href = 'index.html';
+            // Auto-login the new user and redirect to onboarding
+            sessionStorage.setItem('loggedIn', 'true');
+            sessionStorage.setItem('currentUser', JSON.stringify({ email }));
+ 
+            // Redirect to onboarding tour
+            window.location.href = 'onboarding.html';
  
         } catch (err) {
             console.error('Signup error:', err);

@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TimeGrid — Welcome</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+ 
+    body {
+      min-height: 100vh;
+      background-image: url('Background3.jpg');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      position: relative;
+      overflow-x: hidden;
+    }
+ 
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: rgba(10, 18, 35, 0.72);
+      z-index: 0;
+    }
+ 
+    /* Navbar */
+    .navbar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 36px;
+      background: rgba(255,255,255,0.04);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(255,255,255,0.10);
+    }
+ 
+    .brand { color: white; font-size: 18px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; }
+    .brand span { color: darkturquoise; }
+ 
+    .skip-btn {
+      background: transparent;
+      border: 1.5px solid rgba(255,255,255,0.25);
+      border-radius: 8px;
+      color: rgba(255,255,255,0.6);
+      font-family: 'Poppins', sans-serif;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 1px;
+      padding: 7px 18px;
+      cursor: pointer;
+      text-transform: uppercase;
+      transition: all 0.3s;
+      text-decoration: none;
+    }
+    .skip-btn:hover { border-color: darkturquoise; color: darkturquoise; }
+ 
+    /* Page */
+    .page {
+      position: relative;
+      z-index: 1;
+      min-height: 100vh;
+      padding: 110px 24px 60px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+ 
+    /* Welcome hero */
+    .welcome-hero {
+      text-align: center;
+      margin-bottom: 56px;
+      animation: fadeUp 0.6s ease both;
+    }
+ 
+    .welcome-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(0,206,209,0.1);
+      border: 1px solid rgba(0,206,209,0.3);
+      border-radius: 20px;
+      padding: 5px 14px;
+      color: darkturquoise;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+ 
+    .welcome-title {
+      color: white;
+      font-size: clamp(28px, 5vw, 42px);
+      font-weight: 700;
+      line-height: 1.15;
+      margin-bottom: 14px;
+      letter-spacing: -0.5px;
+    }
+ 
+    .welcome-title span { color: darkturquoise; }
+ 
+    .welcome-sub {
+      color: rgba(255,255,255,0.4);
+      font-size: 14px;
+      line-height: 1.7;
+      max-width: 480px;
+      margin: 0 auto;
+    }
+ 
+    /* Step progress */
+    .step-progress {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      margin-bottom: 44px;
+      animation: fadeUp 0.6s ease 0.1s both;
+    }
+ 
+    .step-dot {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      border: 2px solid rgba(255,255,255,0.15);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: rgba(255,255,255,0.25);
+      font-size: 11px;
+      font-weight: 600;
+      transition: all 0.4s;
+      cursor: pointer;
+      position: relative;
+      z-index: 1;
+    }
+ 
+    .step-dot.active {
+      background: darkturquoise;
+      border-color: darkturquoise;
+      color: #0a1223;
+      box-shadow: 0 0 0 4px rgba(0,206,209,0.2);
+    }
+ 
+    .step-dot.done {
+      background: rgba(0,206,209,0.15);
+      border-color: rgba(0,206,209,0.5);
+      color: darkturquoise;
+    }
+ 
+    .step-line {
+      width: 48px;
+      height: 2px;
+      background: rgba(255,255,255,0.1);
+      transition: background 0.4s;
+    }
+ 
+    .step-line.done { background: rgba(0,206,209,0.4); }
+ 
+    /* Cards container */
+    .cards-wrap {
+      width: 100%;
+      max-width: 780px;
+      position: relative;
+      min-height: 420px;
+    }
+ 
+    .step-card {
+      display: none;
+      animation: fadeUp 0.45s ease both;
+    }
+ 
+    .step-card.active { display: block; }
+ 
+    /* Glass card */
+    .glass-card {
+      background: rgba(255,255,255,0.055);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid rgba(255,255,255,0.14);
+      box-shadow: 0 30px 60px rgba(0,0,0,0.3);
+      border-radius: 20px;
+      padding: 36px 40px;
+      margin-bottom: 16px;
+    }
+ 
+    .card-icon-row {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 22px;
+    }
+ 
+    .card-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      background: rgba(0,206,209,0.12);
+      border: 1px solid rgba(0,206,209,0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: darkturquoise;
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+ 
+    .card-label {
+      color: darkturquoise;
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+ 
+    .card-title {
+      color: white;
+      font-size: 20px;
+      font-weight: 600;
+      letter-spacing: -0.2px;
+    }
+ 
+    .card-body {
+      color: rgba(255,255,255,0.5);
+      font-size: 13px;
+      line-height: 1.8;
+      margin-bottom: 24px;
+    }
+ 
+    .card-body strong { color: rgba(255,255,255,0.8); font-weight: 600; }
+ 
+    /* Feature bullets */
+    .feature-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+ 
+    .feature-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 12px 14px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 10px;
+      transition: all 0.2s;
+    }
+ 
+    .feature-item:hover {
+      background: rgba(0,206,209,0.06);
+      border-color: rgba(0,206,209,0.2);
+    }
+ 
+    .feature-icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 7px;
+      background: rgba(0,206,209,0.1);
+      border: 1px solid rgba(0,206,209,0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: darkturquoise;
+      font-size: 11px;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+ 
+    .feature-text { flex: 1; }
+    .feature-name { color: rgba(255,255,255,0.85); font-size: 13px; font-weight: 600; margin-bottom: 2px; }
+    .feature-desc { color: rgba(255,255,255,0.35); font-size: 11px; line-height: 1.5; }
+ 
+    /* Two column layout for some steps */
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+ 
+    /* Visual mockup inline */
+    .inline-mockup {
+      background: rgba(0,0,0,0.2);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 10px;
+      padding: 14px 16px;
+      margin-top: 16px;
+      font-family: 'Courier New', monospace;
+    }
+ 
+    .mockup-label {
+      color: rgba(255,255,255,0.2);
+      font-size: 9px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+      font-family: 'Poppins', sans-serif;
+    }
+ 
+    .mockup-code {
+      color: darkturquoise;
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: 8px;
+    }
+ 
+    /* Nav buttons */
+    .nav-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 28px;
+      animation: fadeUp 0.5s ease 0.2s both;
+    }
+ 
+    .btn-prev {
+      padding: 12px 26px;
+      background: transparent;
+      border: 1.5px solid rgba(255,255,255,0.18);
+      border-radius: 9px;
+      color: rgba(255,255,255,0.5);
+      font-family: 'Poppins', sans-serif;
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+ 
+    .btn-prev:hover { border-color: rgba(255,255,255,0.35); color: white; }
+    .btn-prev:disabled { opacity: 0.2; pointer-events: none; }
+ 
+    .btn-next {
+      padding: 12px 32px;
+      background: darkturquoise;
+      border: none;
+      border-radius: 9px;
+      color: #0a1223;
+      font-family: 'Poppins', sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.25s;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+ 
+    .btn-next:hover {
+      background: rgb(116,254,240);
+      box-shadow: 0 10px 28px rgba(0,206,209,0.3);
+      transform: translateY(-1px);
+    }
+ 
+    .step-counter {
+      color: rgba(255,255,255,0.2);
+      font-size: 11px;
+      letter-spacing: 1px;
+    }
+ 
+    /* Final step */
+    .final-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-top: 8px;
+    }
+ 
+    .final-action {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 12px;
+      padding: 18px 16px;
+      text-align: center;
+      transition: all 0.25s;
+      cursor: pointer;
+      text-decoration: none;
+      display: block;
+    }
+ 
+    .final-action:hover {
+      background: rgba(0,206,209,0.08);
+      border-color: rgba(0,206,209,0.35);
+      transform: translateY(-2px);
+    }
+ 
+    .final-action-icon {
+      font-size: 22px;
+      color: darkturquoise;
+      margin-bottom: 10px;
+    }
+ 
+    .final-action-name {
+      color: white;
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+ 
+    .final-action-desc {
+      color: rgba(255,255,255,0.3);
+      font-size: 10px;
+      line-height: 1.5;
+    }
+ 
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+ 
+    @media (max-width: 600px) {
+      .two-col { grid-template-columns: 1fr; }
+      .final-grid { grid-template-columns: 1fr; }
+      .glass-card { padding: 24px 20px; }
+    }
+  </style>
+</head>
+<body>
+ 
+  <nav class="navbar">
+    <div class="brand">Time<span>Grid</span></div>
+    <a href="dashboard.html" class="skip-btn">Skip Tour <i class="fas fa-arrow-right" style="margin-left:6px;font-size:9px;"></i></a>
+  </nav>
+ 
+  <div class="page">
+ 
+    <div class="welcome-hero">
+      <div class="welcome-eyebrow"><i class="fas fa-star"></i> Account Created</div>
+      <div class="welcome-title">Welcome to <span>TimeGrid</span></div>
+      <div class="welcome-sub">Let's walk you through everything you need to know to get started. It only takes a minute.</div>
+    </div>
+ 
+    <!-- Progress dots -->
+    <div class="step-progress" id="stepProgress">
+      <div class="step-dot active" onclick="goTo(0)">1</div>
+      <div class="step-line" id="line-0"></div>
+      <div class="step-dot" onclick="goTo(1)">2</div>
+      <div class="step-line" id="line-1"></div>
+      <div class="step-dot" onclick="goTo(2)">3</div>
+      <div class="step-line" id="line-2"></div>
+      <div class="step-dot" onclick="goTo(3)">4</div>
+      <div class="step-line" id="line-3"></div>
+      <div class="step-dot" onclick="goTo(4)">5</div>
+    </div>
+ 
+    <div class="cards-wrap">
+ 
+      <!-- Step 1: Overview -->
+      <div class="step-card active" id="step-0">
+        <div class="glass-card">
+          <div class="card-icon-row">
+            <div class="card-icon"><i class="fas fa-th-large"></i></div>
+            <div>
+              <div class="card-label">Step 1 of 5</div>
+              <div class="card-title">What is TimeGrid?</div>
+            </div>
+          </div>
+          <div class="card-body">
+            TimeGrid is a <strong>school scheduling and communication platform</strong> that connects teachers and students in one clean workspace. Here's what you can do:
+          </div>
+          <div class="feature-list">
+            <div class="feature-item">
+              <div class="feature-icon"><i class="fas fa-chalkboard-teacher"></i></div>
+              <div class="feature-text">
+                <div class="feature-name">Create Classes</div>
+                <div class="feature-desc">Teachers set up courses, define availability, and generate a shareable code for students.</div>
+              </div>
+            </div>
+            <div class="feature-item">
+              <div class="feature-icon"><i class="fas fa-user-plus"></i></div>
+              <div class="feature-text">
+                <div class="feature-name">Join Classes</div>
+                <div class="feature-desc">Students enter a 6-character code to instantly enroll in any course.</div>
+              </div>
+            </div>
+            <div class="feature-item">
+              <div class="feature-icon"><i class="fas fa-calendar-check"></i></div>
+              <div class="feature-text">
+                <div class="feature-name">Book Office Hours</div>
+                <div class="feature-desc">Students can view teacher availability and book sessions right from the inbox.</div>
+              </div>
+            </div>
+            <div class="feature-item">
+              <div class="feature-icon"><i class="fas fa-envelope"></i></div>
+              <div class="feature-text">
+                <div class="feature-name">Message Teachers</div>
+                <div class="feature-desc">Send messages directly to your teacher through the built-in inbox.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+ 
+      <!-- Step 2: Dashboard -->
+      <div class="step-card" id="step-1">
+        <div class="glass-card">
+          <div class="card-icon-row">
+            <div class="card-icon"><i class="fas fa-columns"></i></div>
+            <div>
+              <div class="card-label">Step 2 of 5</div>
+              <div class="card-title">Your Dashboard</div>
+            </div>
+          </div>
+          <div class="card-body">
+            The dashboard is your <strong>home base</strong>. It shows all your enrolled courses on the left, and a <strong>live weekly schedule</strong> on the right — automatically populated with your classes.
+          </div>
+          <div class="two-col">
+            <div class="feature-item">
+              <div class="feature-icon"><i class="fas fa-list"></i></div>
+              <div class="feature-text">
+                <div class="feature-name">Course List</div>
+                <div class="feature-desc">All your classes listed in the left sidebar. Click any to view full course details.</div>
+              </div>
+            </div>
+            <div class="feature-item">
+              <div class="feature-icon"><i class="fas fa-calendar-week"></i></div>
+              <div class="feature-text">
+                <div class="feature-name">Weekly View</div>
+                <div class="feature-desc">Mon–Fri schedule with colour-coded period slots for each class.</div>
+              </div>
+            </div>
+            <div class="feature-item">
+              <div class="feature-icon"><i class="fas fa-plus-circle"></i></div>
+              <div class="feature-text">
+                <div class="feature-name">Create Class</div>
+                <div class="feature-desc">Top-right navbar button opens the class creation form.</div>
+              </div>
+            </div>
+            <div class="feature-item">
+              <div class="feature-icon"><i class="fas fa-sign-in-alt"></i></div>
+              <div class="feature-text">
+                <div class="feature-name">Join Class</div>
+                <div class="feature-desc">Top-right navbar button lets you enroll with a code from your teacher.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+ 
+      <!-- Step 3: Creating / Joining a class -->
+      <div class="step-card" id="step-2">
+        <div class="glass-card">
+          <div class="card-icon-row">
+            <div class="card-icon"><i class="fas fa-chalkboard"></i></div>
+            <div>
+              <div class="card-label">Step 3 of 5</div>
+              <div class="card-title">Classes</div>
+            </div>
+          </div>
+          <div class="card-body">
+            <strong>Teachers</strong> create a class by filling in the course name, teacher name, description, availability slots, and period. Once submitted, a <strong>unique 6-character class code</strong> is generated — share this with your students.
+          </div>
+ 
+          <div class="inline-mockup">
+            <div class="mockup-label">Example Class Code</div>
+            <div class="mockup-code">A7KP2X</div>
+          </div>
+ 
+          <div class="card-body" style="margin-top:18px;margin-bottom:14px;">
+            <strong>Students</strong> click <em>Join Class</em> in the navbar, type the 6-character code, and instantly see a preview of the course before joining.
+          </div>
+ 
+          <div class="feature-list">
+            <div class="feature-item">
+              <div class="feature-icon"><i class="fas fa-clock"></i></div>
+              <div class="feature-text">
+                <div class="feature-name">Availability Slots</div>
+                <div class="feature-desc">When creating a class, teachers select Pre-School or After-School slots for Mon–Fri. These appear on the course page so students know when to book.</div>
+              </div>
+            </div>
+            <div class="feature-item">
+              <div class="feature-icon"><i class="fas fa-hashtag"></i></div>
+              <div class="feature-text">
+                <div class="feature-name">Period Selection</div>
+                <div class="feature-desc">Choose Periods 1–8, each mapping to a time block that shows on the weekly schedule.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+ 
+      <!-- Step 4: Inbox -->
+      <div class="step-card" id="step-3">
+        <div class="glass-card">
+          <div class="card-icon-row">
+            <div class="card-icon"><i class="fas fa-inbox"></i></div>
+            <div>
+              <div class="card-label">Step 4 of 5</div>
+              <div class="card-title">Inbox & Office Hours</div>
+            </div>
+          </div>
+          <div class="card-body">
+            Click <strong>Inbox</strong> in the navbar (or the <em>Message Teacher</em> button on any course page) to open direct conversations with your teachers.
+          </div>
+          <div class="feature-list">
+            <div class="feature-item">
+              <div class="feature-icon"><i class="fas fa-comment-dots"></i></div>
+              <div class="feature-text">
+                <div class="feature-name">Direct Messaging</div>
+                <div class="feature-desc">Start a conversation per course. Type a message and press Enter or the send button to deliver it instantly.</div>
+              </div>
+            </div>
+            <div class="feature-item">
+              <div class="feature-icon"><i class="fas fa-calendar-plus"></i></div>
+              <div class="feature-text">
+                <div class="feature-name">Book Office Hours</div>
+                <div class="feature-desc">Inside any chat, click <strong>Book Office Hours</strong> at the top right. Pick an available time slot set by your teacher, describe what you need help with, and confirm — a booking card appears in the chat.</div>
+              </div>
+            </div>
+            <div class="feature-item">
+              <div class="feature-icon"><i class="fas fa-plus"></i></div>
+              <div class="feature-text">
+                <div class="feature-name">New Message</div>
+                <div class="feature-desc">Use the <em>+ New Message</em> button in the left panel to start a conversation for any enrolled course.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+ 
+      <!-- Step 5: Ready to go -->
+      <div class="step-card" id="step-4">
+        <div class="glass-card">
+          <div class="card-icon-row">
+            <div class="card-icon"><i class="fas fa-rocket"></i></div>
+            <div>
+              <div class="card-label">Step 5 of 5</div>
+              <div class="card-title">You're All Set!</div>
+            </div>
+          </div>
+          <div class="card-body">
+            You now know everything you need to get started on TimeGrid. Choose where you'd like to go first:
+          </div>
+          <div class="final-grid">
+            <a href="dashboard.html" class="final-action">
+              <div class="final-action-icon"><i class="fas fa-th-large"></i></div>
+              <div class="final-action-name">Dashboard</div>
+              <div class="final-action-desc">View your schedule and all your courses</div>
+            </a>
+            <a href="createclass.html" class="final-action">
+              <div class="final-action-icon"><i class="fas fa-plus-circle"></i></div>
+              <div class="final-action-name">Create a Class</div>
+              <div class="final-action-desc">Set up your first course as a teacher</div>
+            </a>
+            <a href="joincourse.html" class="final-action">
+              <div class="final-action-icon"><i class="fas fa-sign-in-alt"></i></div>
+              <div class="final-action-name">Join a Class</div>
+              <div class="final-action-desc">Enter a code to enroll as a student</div>
+            </a>
+          </div>
+        </div>
+      </div>
+ 
+    </div><!-- /cards-wrap -->
+ 
+    <!-- Navigation -->
+    <div class="nav-row" style="width:100%;max-width:780px;">
+      <button class="btn-prev" id="btnPrev" onclick="prevStep()" disabled>
+        <i class="fas fa-arrow-left" style="margin-right:7px;font-size:10px;"></i> Back
+      </button>
+      <span class="step-counter" id="stepCounter">1 / 5</span>
+      <button class="btn-next" id="btnNext" onclick="nextStep()">
+        Next <i class="fas fa-arrow-right" style="font-size:10px;"></i>
+      </button>
+    </div>
+ 
+  </div>
+ 
+  <script>
+    // Redirect if not logged in
+    if (!sessionStorage.getItem('loggedIn')) {
+      window.location.href = 'index.html';
+    }
+ 
+    let current = 0;
+    const total = 5;
+ 
+    function updateUI() {
+      // Cards
+      document.querySelectorAll('.step-card').forEach((c, i) => {
+        c.classList.toggle('active', i === current);
+      });
+ 
+      // Dots
+      document.querySelectorAll('.step-dot').forEach((d, i) => {
+        d.classList.remove('active', 'done');
+        if (i === current) d.classList.add('active');
+        else if (i < current) d.classList.add('done');
+      });
+ 
+      // Lines
+      for (let i = 0; i < total - 1; i++) {
+        const line = document.getElementById('line-' + i);
+        if (line) line.classList.toggle('done', i < current);
+      }
+ 
+      // Buttons
+      document.getElementById('btnPrev').disabled = current === 0;
+      document.getElementById('stepCounter').textContent = `${current + 1} / ${total}`;
+ 
+      const nextBtn = document.getElementById('btnNext');
+      if (current === total - 1) {
+        nextBtn.innerHTML = '<i class="fas fa-check" style="font-size:10px;"></i> Go to Dashboard';
+        nextBtn.onclick = () => window.location.href = 'dashboard.html';
+      } else {
+        nextBtn.innerHTML = 'Next <i class="fas fa-arrow-right" style="font-size:10px;"></i>';
+        nextBtn.onclick = nextStep;
+      }
+    }
+ 
+    function nextStep() {
+      if (current < total - 1) { current++; updateUI(); window.scrollTo({ top: 0, behavior: 'smooth' }); }
+    }
+ 
+    function prevStep() {
+      if (current > 0) { current--; updateUI(); window.scrollTo({ top: 0, behavior: 'smooth' }); }
+    }
+ 
+    function goTo(i) {
+      current = i; updateUI();
+    }
+ 
+    updateUI();
+  </script>
+</body>
+</html>
+ 
